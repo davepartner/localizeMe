@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval' 'unsafe-inline'; style-src * 'unsafe-inline'; media-src *" />
+    
+    
+    <script src="js/firebase.js"></script>
+  <script src='js/jquery.js'></script>
+  
+<!-- GeoFire -->
+<script src="https://cdn.firebase.com/libs/geofire/4.0.0/geofire.min.js"></script>
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <title>LocalizeMe</title>
+    
+       <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+</head>
+
+<body class="theme-teal">
+
+
+  
+  <div class="views">
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-fixed toolbar-fixed">
+          <!-- Page, "data-page" contains page name -->
+          <div data-page="index" class="page">
+ 
+            <!-- Top Navbar. In Material theme it should be inside of the page-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> Localize Me</div>
+              </div>
+              
+   
+            </div>              
+            
+            <!-- Sub navbar
+    <div class="subnavbar">
+        <div class="buttons-row">
+            <a href="#tab1" class="button active">My Doc</a>
+            <a href="#tab2" class="button">Find</a>
+            <a href="#tab3" class="button">History</a>
+        </div>
+    </div> -->
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+           
+ 
+           
+
+  
+			<div class="page-content">
+			 
+	
+      
+      
+      
+      <h1 class="color-gray" align="center"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> Localize Me </h1>
+      <div class="content-block-title"  align="center">Easy chat app</div>
+<div class="list-block">
+  <ul>
+    <!-- Select 
+    <li>
+      <div class="item-content">
+        <div class="item-media"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></div>
+        <div class="item-inner">
+          <div class="item-title label"> Radius</div>
+          <div class="item-input">
+            <select>
+              <option>Compound (200 meters)</option>
+              <option>City (1km)</option>
+              <option>State</option>
+              <option>Country</option>
+              <option>World</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </li> -->
+  </ul> 
+</div>
+      
+      
+       
+                  		<div class="card">
+						  
+						       <p> 
+						       <a href="messages_view.html" class="button button-big button-fill button-raised color-teal open-3-modal">Enter Chat <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+						     </p> 
+						       
+						</div> 
+			 		 </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="login-screen">
+    <div class="view">
+      <div class="page">
+      <div class="page-content login-screen-content">
+    <div class="login-screen-title">Localize Me</div>
+      <div class="content-block">
+    <!-- Buttons row as tabs controller -->
+    <div class="buttons-row theme-green">
+      <!-- Link to 1st tab, active -->
+      <a href="#loginTab" class="tab-link active button button-raised button-fill">Login</a>
+      <!-- Link to 2nd tab -->
+      <a href="#signupTab" class="tab-link button button-raised button-fill">Signup</a>
+      <!-- Link to 3rd tab -->
+      <a href="#forgotPaaswordTab" class="tab-link button button-raised button-fill">Forgot?</a>
+    </div>
+  </div>
+  
+  
+  
+    <div class="tabs-animated-wrap">
+        
+        <!-- Tabs, tabs wrapper -->
+        <div class="tabs">
+  <div id="loginTab" class="tab">  
+  
+  <form id="loginForm" class="list-block">
+      <div class="list-block inset"">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Email</div>
+              <div class="item-input">
+                <input type="email" name="email" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Password</div>
+              <div class="item-input">
+                <input type="password" name="password" placeholder="Your password"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li><a href="#" class="button login-button button-raised button-fill color-teal ripple-green">Sign In</a></li>
+        </ul>
+        <div class="list-block-label">
+          <p>Click Sign In to close Login Screen</p>
+        </div>
+      </div>
+    </form> 
+
+</div>
+
+
+  <div id="signupTab" class="tab"> 
+       <form id="signupForm">
+      <div class="list-block inset">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Email</div>
+              <div class="item-input">
+                <input type="email" name="email" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Password</div>
+              <div class="item-input">
+                <input type="password" name="password" placeholder="Your password"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">First name</div>
+              <div class="item-input">
+                <input type="text" name="firstname" placeholder="Your Firstname"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Middle name</div>
+              <div class="item-input">
+                <input type="text" name="middlename" placeholder="Your Middle name"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Last name</div>
+              <div class="item-input">
+                <input type="text" name="middlename" placeholder="Your Middle name"/>
+              </div>
+            </div>
+          </li>
+         
+		          <li class="item-content">
+		        <div class="item-inner">
+		          <div class="item-title label">Birth date</div>
+		          <div class="item-input">
+		            <input type="date" placeholder="Birth day" value="2014-04-30">
+		          </div>
+		      </div>
+		    </li> 
+		    
+		    <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Gender</div>
+              <div class="item-input">
+              <select name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              </select>
+              </div>
+            </div>
+		   </li>
+		    <li class="item-content">
+            <div class="item-inner">
+              <div class="item-input">
+             <a href="#" id="signupButton" class="button list-button button-raised button-fill color-teal ripple-green">Sign Up</a>
+        
+              </div>
+            </div>
+		   </li>
+        </ul>
+      </div>
+    </form>  
+  
+  </div>
+  <div id="forgotPaaswordTab" class="tab"> 
+     <form id="recoverForm" >
+      <div class="list-block inset"">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Email</div>
+              <div class="item-input">
+                <input type="email" name="recoveryEmail" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill color-teal ripple-green">Send Recovery Email</a></li>
+        </ul>
+      </div>
+    </form> 
+  </div>
+  <div id="changePsswordTab" class="tab"> Change Password</div>
+  
+  </div>
+  </div>
+  
+  
+  
+  </div>
+      </div>
+    </div>
+  </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/my-app.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+
+</html>
