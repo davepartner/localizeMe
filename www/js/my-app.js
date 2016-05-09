@@ -148,35 +148,6 @@ ref.onAuth(checkLoggedIn);
 
   	
   	
-  $$('.open-3-modal').on('click', function () {
-  	
-  myApp.modal({
-    title:  'Type your health complaint below',
-    text: '<div class="list-block"><ul><li class="align-top"><div class="item-content"><div class="item-inner"><div class="item-input"> <textarea></textarea></div> </div> </div> </li> </ul> </div>',
-    buttons: [
-      {
-        text: 'submit',
-        onClick: function() {
-          myApp.alert('Complaint succeffuly submitted','Success!')
-        }
-      },
-      {
-        text: 'call',
-        onClick: function() {
-          myApp.alert('You clicked second button!')
-        }
-      },
-      {
-        text: 'cancel',
-        bold: true,
-        onClick: function() {
-        //  myApp.alert('You clicked third button!')
-        }
-      },
-    ]
-  })
-});
-  
   
   //recover email
   $$('.recovery-button').on('click', function () {
@@ -287,7 +258,8 @@ var myMessages = myApp.messages('.messages', {
 				  myMessagebar.clear()
 				 
 				  
-				 var name = nameField.val(); 
+				 var name = "Dave"; 
+				// var name = nameField.val(); 
 				 //SAVE DATA TO FIREBASE AND EMPTY FIELD
 			     // messagesRef.push({name:name, text:messageText});
 				  // Avatar and name for received message
@@ -395,80 +367,3 @@ var myMessages = myApp.messages('.messages', {
 
 
 
-
-
-(function() {
-
-  // Create a new GeoFire instance at the random Firebase location
-  var geoFire = new GeoFire(messagesRef);
-
-  /* Uses the HTML5 geolocation API to get the current user's location */
-  var getLocation = function() {
-    if (typeof navigator !== "undefined" && typeof navigator.geolocation !== "undefined") {
-      myApp.alert("This app needs your location to function. Please accept.");
-      navigator.geolocation.getCurrentPosition(geolocationCallback, errorHandler);
-    } else {
-      log("Your browser does not support the HTML5 Geolocation API, so this demo will not work.")
-    }
-  };
-
-  /* Callback method from the geolocation API which receives the current user's location */
-  var geolocationCallback = function(location) {
-    var latitude = location.coords.latitude;
-    var longitude = location.coords.longitude;
-    log("Retrieved user's location: [" + latitude + ", " + longitude + "]");
-
-    var username = "wesley";
-    geoFire.set(username, [latitude, longitude]).then(function() {
-      log("Current user " + username + "'s location has been added to GeoFire");
-
-      // When the user disconnects from Firebase (e.g. closes the app, exits the browser),
-      // remove their GeoFire entry
-      messagesRef.child(username).onDisconnect().remove();
-
-      log("Added handler to remove user " + username + " from GeoFire when you leave this page.");
-      log("You can use the link above to verify that " + username + " was removed from GeoFire after you close this page.");
-    }).catch(function(error) {
-      log("Error adding user " + username + "'s location to GeoFire");
-    });
-  }
-
-  /* Handles any errors from trying to get the user's current location */
-  var errorHandler = function(error) {
-    if (error.code == 1) {
-      log("Error: PERMISSION_DENIED: User denied access to their location");
-    } else if (error.code === 2) {
-      log("Error: POSITION_UNAVAILABLE: Network is down or positioning satellites cannot be reached");
-    } else if (error.code === 3) {
-      log("Error: TIMEOUT: Calculating the user's location too took long");
-    } else {
-      log("Unexpected error code")
-    }
-  };
-
-  // Get the current user's location
-  getLocation();
-
-  /*************/
-  /*  HELPERS  */
-  /*************/
-  /* Returns a random string of the inputted length */
-  function generateRandomString(length) {
-      var text = "";
-      var validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-      for(var i = 0; i < length; i++) {
-          text += validChars.charAt(Math.floor(Math.random() * validChars.length));
-      }
-
-      return text;
-  }
-
-  /* Logs to the page instead of the console */
-  function log(message) {
-    var childDiv = document.createElement("div");
-    var textNode = document.createTextNode(message);
-    childDiv.appendChild(textNode);
-    document.getElementById("log").appendChild(childDiv);
-  }
-})();
