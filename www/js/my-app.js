@@ -39,7 +39,7 @@ ref.createUser(formData,
     myApp.alert("Error creating account:"+error.message, error);
   } else {
     //alert("Successfully created user account with uid:", userData.uid);
-    alert("Successfully created account. Please login");
+    myApp.alert("Successfully created account. Please login");
     localStorage.setItem(formData);
     myApp.loginScreen(); // open Login Screen//load another page with auth form
   }
@@ -185,12 +185,6 @@ ref.onAuth(checkLoggedIn);
     });
   	
 
-
-$$(document).on('pageInit', function (e) {
-	checkLoggedIn();
-	
-	
-  	
 	$$('.list-button').on('click', function () {
    // var email = pageContainer.find('input[name="email"]').val();
     var formData = myApp.formToJSON('#signupForm'); //convert submitted form to json.
@@ -209,7 +203,9 @@ $$(document).on('pageInit', function (e) {
   });
   
   
-  
+$$(document).on('pageInit', function (e) {
+	//checkLoggedIn();
+	
 });
 
 // Generate dynamic page
@@ -312,15 +308,8 @@ var myMessages = myApp.messages('.messages', {
 					
 					geoFire.set("location", [longi, lati]).then(function() {
 					  myApp.alert("Provided key has been added to GeoFire");
-					}, function(error) {
-					  console.log("Error: " + error);
-					});
 					
-					myApp.alert("Provided key has been added to GeoFire");
-					
-					
-				  // Add message
-				  messagesRef.push({
+					  messagesRef.push({
 				  	//userid
 				  	user_id: localStorage.user_id, 
 				    // Message text
@@ -333,6 +322,15 @@ var myMessages = myApp.messages('.messages', {
 				    day: !conversationStarted ? 'Today' : false,
 				    time: !conversationStarted ? (new Date()).getHours() + ':' + (new Date()).getMinutes() : false
 				  })
+					
+					
+					}, function(error) {
+					  console.log("Error: " + error);
+					});
+					
+					
+				  // Add message
+				
 					}
 			
 			       
