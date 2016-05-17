@@ -1,6 +1,8 @@
 // Initialize your app
 var myApp = new Framework7(
 {
+	template7Pages: true ,
+	pushState: 0,
 	//pushState: 0,
 	swipeBackPage: true,
    // Hide and show indicator during ajax requests
@@ -9,10 +11,6 @@ var myApp = new Framework7(
     },
     onAjaxComplete: function (xhr) {
         myApp.hideIndicator();
-    },
-    
-    preroute: function (mainView, options) {
-    	
     }
     
  });
@@ -23,54 +21,64 @@ var $$ = Dom7;
 // Add view
 var mainView = myApp.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
-    domCache: true,
+   // domCache: true,
 });
 
 
 
 
 //create account
-function createUserAccount(formData){
-	var ref = new Firebase("https://doctordial.firebaseio.com");
-ref.createUser(formData,
-
- function(error, userData) {
-  if (error) {
-    myApp.alert("Error creating account:"+error.message, error);
-  } else {
-    //alert("Successfully created user account with uid:", userData.uid);
-    myApp.alert("Successfully created account. Please login");
-    localStorage.setItem(formData);
-    myApp.loginScreen(); // open Login Screen//load another page with auth form
-  }
-});
-}
-
 //handle login
 function loginFire(sentEmail,sentPassword){ //get this login from database 
-	var ref = new Firebase("https://doctordial.firebaseio.com");
+	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.authWithPassword({
   email    : sentEmail,
   password : sentPassword
 }, function(error, authData) {
   if (error) {
-  	
-  	myApp.alert("Error loging in, if you are sure you are registered, please try again or use the forgot password feature", "Incorrect Login");
-    myApp.loginScreen(); // open Login Screen //load another page with auth form
+  	switch (error.code) {
+      case "INVALID_EMAIL":
+        myApp.alert("The specified user account email is invalid.","Error");
+        break;
+      case "INVALID_PASSWORD":
+        myApp.alert("The specified user account password is incorrect.","Error");
+        break;
+      case "INVALID_USER":
+        myApp.alert("The specified user account does not exist.","Error");
+        break;
+      default:
+        myApp.alert("Error logging user in:", error);
+    }
     return false; //required to prevent default router action
   } else {
+  	//save data in local storage
   	localStorage.user_id = authData.uid;
-     //myApp.alert("Login successful", authData);
-  	//save data in local variablable
+  	
      myApp.alert("Login successful ", 'Success!');
        myApp.closeModal('.login-screen'); //closelogin screen
+       myApp.closeModal();
   }
 });
 
 }
 
 function changeEmail(){
-	var ref = new Firebase("https://doctordial.firebaseio.com");
+	var ref = new Firebase("https://localizeme.firebaseio.com");
+ref.changeEmail({
+  oldEmail : "bobtony@firebase.com",
+  newEmail : "bobtony@google.com",
+  password : "correcthorsebatterystaple"
+}, function(error) {
+  if (error === null) {
+    console.log("Email changed successfully");
+  } else {
+    console.log("Error changing email:", error);
+  }
+});
+}
+
+function changeEmail(){
+	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.changeEmail({
   oldEmail : "bobtony@firebase.com",
   newEmail : "bobtony@google.com",
@@ -85,7 +93,7 @@ ref.changeEmail({
 }
 
 function changePassword(){
-	var ref = new Firebase("https://doctordial.firebaseio.com");
+	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.changePassword({
   email       : "bobtony@firebase.com",
   oldPassword : "correcthorsebatterystaple",
@@ -101,7 +109,7 @@ ref.changePassword({
 
 function sendPasswordResetEmail(recoveryEmail){ 
 //You can edit the content of the password reset email from the Login & Auth tab of your App Dashboard.
-	var ref = new Firebase("https://doctordial.firebaseio.com");
+	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.resetPassword({
   email : recoveryEmail
 }, function(error) {
@@ -111,8 +119,6 @@ ref.resetPassword({
   	myApp.alert("Error sending password reset email:", error);
   }
 });
-
-
 }
 
 function deleteUser(){
@@ -139,7 +145,7 @@ function checkLoggedIn(authData) {
   }
 }
 // Register the callback to be fired every time auth state changes
-var ref = new Firebase("https://doctordial.firebaseio.com");
+var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.onAuth(checkLoggedIn);
 
 
@@ -168,11 +174,21 @@ ref.onAuth(checkLoggedIn);
        //run login function
 	//messages must be initialized here
   $$('.login-button').on('click', function () {
-  	var email = pageContainer.find('input[name="email"]').val();
-  	var password = pageContainer.find('input[name="password"]').val();
+  	var email = $$('input[name="loginemail"]').val();
+  	var password = $$('input[name="loginpassword"]').val();
   loginFire(email, password);
+  
   });
   
+  
+
+ $$('.logout').on('click', function () {
+ 	 var ref = new Firebase("https://localizeme.firebaseio.com");
+          	myApp.alert("You are loging out", "Logout");
+          	  ref.unauth(); //logout
+          	  localStorage.removeItem("user_id");
+          	 myApp.loginScreen(); // open Login Screen if user is not logged in 
+ });
   
 $$(document).on('pageInit', function (e) {
 	//checkLoggedIn();
@@ -208,9 +224,22 @@ function createContentPage() {
 	return;
 }
 
+
+ //recover email
+  $$('.enter-chat').on('click', function () {
+  	var radius = $$('input[name="radius"]').val();
+  	localStorage.radius = radius;
+  	//redirect
+  	mainView.router.loadPage('messages_view.html');
+  	
+  	});
+  	
+  	
+
+
+
+ 	
  myApp.onPageInit('messages_view', function(page) {
-
-
 
 
 // Conversation flag
@@ -231,9 +260,12 @@ var myMessages = myApp.messages('.messages', {
 // Do something here when page loaded and initialized
 	//var scrolled = 0;
 			  // CREATE A REFERENCE TO FIREBASE
-			  var messagesRef = new Firebase('https://doctordial.firebaseio.com/messages');
+			 
                
-              
+               var messagesRef = new Firebase("https://localizeme.firebaseio.com/messages");
+               var geomessagesRef = new Firebase("https://localizeme.firebaseio.com");
+			   
+              var geoFire = new GeoFire(geomessagesRef.child("geomessages"));
               
 			  // REGISTER DOM ELEMENTS
 			  var messageField = $$('#messageInput');
@@ -241,14 +273,50 @@ var myMessages = myApp.messages('.messages', {
 			  var messageList = $$('.messages');
 			  var sendMessageButton = $$('#sendMessageButton');
 
-			  
+			     	//get user current location
+					function getLocation() {
+					    if (navigator.geolocation) {
+					        navigator.geolocation.getCurrentPosition(showPosition);
+					    } else {
+					       alert("Geolocation is not supported by this browser.");
+					    }
+					}
+
 							  
 				// Init Messagebar
 				var myMessagebar = myApp.messagebar('.messagebar');
-				 
-				// Handle message
-				$$('.messagebar .link').on('click', function () {
+				
+						
 					
+
+					function showPosition(position) {
+					      userLatitude = position.coords.latitude;
+					      userLongitude = position.coords.longitude; 
+					      $$('.latitudeHidden').text(userLatitude);
+					      $$('.longitudeHidden').text(userLongitude);
+					      
+					      
+					// Global map variable
+					var map;
+					/*
+					// Set the center as Firebase HQ
+					var locations = {
+					  "userLocation": [userLatitude, userLongitude],
+					  "friendsLocation": [37.7789, -122.3917]
+					}; */
+
+
+					var center = [userLatitude, userLongitude];
+					//var center = locations["userLocation"];
+
+
+						
+					// Query radius
+					var radiusInKm = Number(localStorage.radius) || Number(0.3);
+
+
+				// Handle message
+				$$('.messagebar .link').on('click', function () { 
 				  // Message text
 				  var messageText = myMessagebar.value().trim();
 				  // Exit if empy message
@@ -259,13 +327,12 @@ var myMessages = myApp.messages('.messages', {
 				 
 				  
 				 var name = "Dave"; 
-				// var name = nameField.val(); 
-				 //SAVE DATA TO FIREBASE AND EMPTY FIELD
-			     // messagesRef.push({name:name, text:messageText});
-				  // Avatar and name for received message
-				 // var avatar;
-				  
-					  messagesRef.push({
+				
+				  	
+				  try{
+				
+				  	 
+					 var newPostRef =  messagesRef.push({
 				  	//userid
 				  	user_id: localStorage.user_id, 
 				    // Message text
@@ -277,35 +344,77 @@ var myMessages = myApp.messages('.messages', {
 				    // Day
 				    day: !conversationStarted ? 'Today' : false,
 				    time: !conversationStarted ? (new Date()).getHours() + ':' + (new Date()).getMinutes() : false
-				  })
-			       
-			      
-				
+				  });
 				  
-				
+				  
+				   // myApp.alert(newPostRef.key()); newPostRef.key()
+				  //save location of this message in firebase
+				   var postRefKey = newPostRef.key();
+				    geoFire.set(postRefKey, center).then(function() {
+				      log("Current user " + username + "'s location has been added to GeoFire");
+
+				      // When the user disconnects from Firebase (e.g. closes the app, exits the browser),
+				      // remove their GeoFire entry
+				      geomessagesRef.child(username).onDisconnect().remove();
+
+				      log("Added handler to remove user " + username + " from GeoFire when you leave this page.");
+				      log("You can use the link above to verify that " + username + " was removed from GeoFire after you close this page.");
+				    }).catch(function(error) {
+				      log("Error adding user " + username + "'s location to GeoFire");
+				    });
+				    
+				    
+				  }catch(err1){
+						myApp.alert("As you can see: "+err1.message);
+					}
+				 
+			       
 				  // Update conversation flag
 				  conversationStarted = true;
 				});                
 
 
-			  // Add a callback that is triggered for each chat message.
-			  messagesRef.limitToLast(20).on('child_added', function (snapshot) {
+
+
+                // Create a new GeoQuery instance
+				var geoQuery = geoFire.query({
+				  center: center,
+				  radius: radiusInKm
+				});
+
+			//	geoQuery.on("key_entered", function(key, location, distance) {
+			///	  var john = key + " entered query at " + location + " (" + distance + " km from center)";
+				
+				
+			
+			
+
+
+
+
+}  
+
+// Add a callback that is triggered for each chat message. .child("receiver_user_id")equalTo(page.query.id)
+			  messagesRef.limitToLast(10).on('child_added', function (snapshot) {
 			    //GET DATA
 			    var data = snapshot.val();
 			    var username = data.name || "anonymous";
 			    var message = data.text;
-			    var day = data.day;
-			    var time = data.time;
-			  
-			    
 			    
 			    if(localStorage.user_id == data.user_id){ //if this is the sender
 					 var messageType = 'sent';
 			   }else{
 			   	     var messageType = 'received';
 			   }
+			    var day = data.day;
+			    var time = data.time;
+			    
+			    
+
+			    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
 			   
-			  
+			
+			      // Add message
 			     
 				try{
 					myMessages.addMessage({
@@ -316,8 +425,7 @@ var myMessages = myApp.messages('.messages', {
 				    type: messageType,
 				    // Avatar and name:
 				    //avatar: avatar,
-				    name: name,
-				  
+				    //name: john,
 				    // Day
 				    day: !conversationStarted ? 'Today' : false,
 				    time: !conversationStarted ? (new Date()).getHours() + ':' + (new Date()).getMinutes() : false
@@ -325,45 +433,66 @@ var myMessages = myApp.messages('.messages', {
 				}catch(err){
 					//alert("got the error"+err);
 				}
-				  
-				  
-				  
-				  
 			  });
 
+				
+			//	});
+/* Handles any errors from trying to get the user's current location */
+  var errorHandler = function(error) {
+    if (error.code == 1) {
+      log("Error: PERMISSION_DENIED: User denied access to their location");
+    } else if (error.code === 2) {
+      log("Error: POSITION_UNAVAILABLE: Network is down or positioning satellites cannot be reached");
+    } else if (error.code === 3) {
+      log("Error: TIMEOUT: Calculating the user's location too took long");
+    } else {
+      log("Unexpected error code")
+    }
+  };
+  
+  
+function startWatch(){
+if (navigator.geolocation) {
+	var optn = {
+		enableHighAccuracy : true,
+		timeout : Infinity,
+		maximumAge : 0
+	};
+	watchId = navigator.geolocation.watchPosition(showPosition, showError, optn);
+} else {
+	alert('Geolocation is not supported in your browser');
+}
+}
+function stopWatch() {
+	if (watchId) {
+		navigator.geolocation.clearWatch(watchId);
+		watchId = null;
+	}
+}
+
+function showError(error) {
+	switch(error.code) {
+		case error.PERMISSION_DENIED:
+			alert("User denied the request for Geolocation.");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			alert("Location information is unavailable.");
+			break;
+		case error.TIMEOUT:
+			alert("The request to get user location timed out.");
+			break;
+		case error.UNKNOWN_ERROR:
+			alert("An unknown error occurred.");
+			break;
+	}
+}
+
+
+
+
+
+getLocation();	
+  	
+  	
 }).trigger();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

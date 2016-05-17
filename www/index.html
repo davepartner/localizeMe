@@ -33,8 +33,15 @@
     <script src="js/firebase.js"></script>
   <script src='js/jquery.js'></script>
   
+  
+    <script type="text/javascript" src="cordova.js"></script>
 <!-- GeoFire -->
-<script src="https://cdn.firebase.com/libs/geofire/4.0.0/geofire.min.js"></script>
+<script src="js/vendor/geofire.min.js"></script>
+      <!-- Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script> 
+  <!-- Lo-Dash -->
+  <script src="js/vendor/lodash.min.js"></script> 
+  
     <!-- Good default declaration:
     * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
     * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
@@ -54,15 +61,14 @@
     <link rel="stylesheet" href="css/framework7.material.colors.min.css">
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/my-app.css">
+    <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    
-    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  
 </head>
 
-<body class="theme-teal">
+<body class="theme-pink">
 
 
-  
   <div class="views">
       <!-- Your main view, should have "view-main" class -->
       <div class="view view-main">
@@ -74,10 +80,8 @@
             <!-- Top Navbar. In Material theme it should be inside of the page-->
             <div class="navbar">
               <div class="navbar-inner">
-                <div class="center"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> Localize Me</div>
+                <div class="center"> <i class="fa fa-map-marker" ></i> LocalizeMe</div>
               </div>
-              
-   
             </div>              
             
             <!-- Sub navbar
@@ -92,48 +96,139 @@
             <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
            
  
-           
-
   
 			<div class="page-content">
-			 
-	
-      
-      
-      
-      <h1 class="color-gray" align="center"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> Localize Me </h1>
-      <div class="content-block-title"  align="center">Easy chat app</div>
-<div class="list-block">
-  <ul>
-    <!-- Select 
-    <li>
-      <div class="item-content">
-        <div class="item-media"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></div>
-        <div class="item-inner">
-          <div class="item-title label"> Radius</div>
-          <div class="item-input">
-            <select>
-              <option>Compound (200 meters)</option>
-              <option>City (1km)</option>
-              <option>State</option>
-              <option>Country</option>
-              <option>World</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </li> -->
-  </ul> 
-</div>
-      
-      
-       
+			<style>
+				.blinks{
+					@-webkit-keyframes blinker {  
+					  from { opacity: 1.0; }
+					  to { opacity: 0.0; }
+					}
+
+					.waitingForConnection {
+					  -webkit-animation-name: blinker;  
+					  -webkit-animation-iteration-count: infinite;  
+					  -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+					  -webkit-animation-duration: 1.7s; 
+					}  
+				}    
+			</style>
+			<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
+			 </div>    
+			 <div class="content-block-title">Show me messages within this
+			 </div>
+			  <div class="longitudeHidden"></div>
+    <div class="latitudeHidden"></div>
+    
+        <script type="text/javascript">
+    google.maps.event.addDomListener(window, "load", initializeMap);
+  </script>
+
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-61470203-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  
+  
+			 <div class="list-block">
+					  <ul>
+					    <!-- Single radio input -->
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.03" checked="checked" class="radius">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Building</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.1" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Compound</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.5" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Neighbourhood</div>
+					        </div>
+					      </label>
+					    </li>
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="20" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">City</div>
+					        </div>
+					      </label>
+					    </li>
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="50" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">State</div>
+					        </div>
+					      </label>
+					    </li>
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="50" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">State</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					  </ul>
+			</div>    
+        
                   		<div class="card">
-						  
 						       <p> 
-						       <a href="messages_view.html" class="button button-big button-fill button-raised color-teal open-3-modal">Enter Chat <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-						     </p> 
+						        <a href="#" class="button button-big button-fill button-raised enter-chat">
+						         Enter Chat <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+						      </p>
 						       
+						       <p>
+						        <a href="#" class="button button-big button-fill button-raised  logout">
+						        <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+						      </p>
 						</div> 
 			 		 </div>
         
@@ -143,6 +238,7 @@
     </div>
     
     
+   
     
     
     
@@ -151,21 +247,22 @@
     
     
     
-    
-    <div class="login-screen modal-in">
+    <div class="login-screen">
     <div class="view">
       <div class="page">
       <div class="page-content login-screen-content">
-    <div class="login-screen-title">Localize Me</div>
+    <div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
+			 </div>
       <div class="content-block">
     <!-- Buttons row as tabs controller -->
-    <div class="buttons-row theme-green">
+    <div class="buttons-row">
       <!-- Link to 1st tab, active -->
-      <a href="#loginTab" class="tab-link active button button-raised button-fill">Login</a>
+      <a href="#loginTab" class="tab-link active button button-raised button-fill"><i class="fa fa-key" aria-hidden="true"></i> Login</a>
       <!-- Link to 2nd tab -->
-      <a href="#signupTab" class="tab-link button button-raised button-fill">Signup</a>
+      <a href="#signupTab" class="tab-link button button-raised button-fill"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Signup</a>
       <!-- Link to 3rd tab -->
-      <a href="#forgotPaaswordTab" class="tab-link button button-raised button-fill">Forgot?</a>
+      <a href="#forgotPaaswordTab" class="tab-link button button-raised button-fill"><i class="fa fa-check-square-o" aria-hidden="true"></i> Forgot?</a>
     </div>
   </div>
   
@@ -176,23 +273,23 @@
         <!-- Tabs, tabs wrapper -->
         <div class="tabs">
   <div id="loginTab" class="tab">  
-  
+  <div class="login-screen-title">Login</div>
   <form id="loginForm" class="list-block">
-      <div class="list-block inset"">
+      <div class="list-block inset">
         <ul>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Email</div>
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
               <div class="item-input">
-                <input type="email" name="email" placeholder="Your email"/>
+                <input type="email" name="loginemail" placeholder="Your email"/>
               </div>
             </div>
           </li>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Password</div>
+              <div class="item-title label"><i class="fa fa-key" aria-hidden="true"></i> Password</div>
               <div class="item-input">
-                <input type="password" name="password" placeholder="Your password"/>
+                <input type="password" name="loginpassword" placeholder="Your password"/>
               </div>
             </div>
           </li>
@@ -200,11 +297,8 @@
       </div>
       <div class="list-block">
         <ul>
-          <li><a href="#" class="button login-button button-raised button-fill color-teal ripple-green">Sign In</a></li>
+          <li><a href="#" class="button login-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In</a></li>
         </ul>
-        <div class="list-block-label">
-          <p>Click Sign In to close Login Screen</p>
-        </div>
       </div>
     </form> 
 
@@ -212,12 +306,13 @@
 
 
   <div id="signupTab" class="tab"> 
+    <div class="login-screen-title">Signup</div>
        <form id="signupForm">
       <div class="list-block inset">
         <ul>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Email</div>
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
               <div class="item-input">
                 <input type="email" name="email" placeholder="Your email"/>
               </div>
@@ -225,7 +320,7 @@
           </li>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Password</div>
+              <div class="item-title label"><i class="fa fa-key" aria-hidden="true"></i> Password</div>
               <div class="item-input">
                 <input type="password" name="password" placeholder="Your password"/>
               </div>
@@ -233,7 +328,7 @@
           </li>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">First name</div>
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> First name</div>
               <div class="item-input">
                 <input type="text" name="firstname" placeholder="Your Firstname"/>
               </div>
@@ -241,7 +336,7 @@
           </li>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Middle name</div>
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> Middle name</div>
               <div class="item-input">
                 <input type="text" name="middlename" placeholder="Your Middle name"/>
               </div>
@@ -249,25 +344,25 @@
           </li>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Last name</div>
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> Last name</div>
               <div class="item-input">
-                <input type="text" name="middlename" placeholder="Your Middle name"/>
+                <input type="text" name="lastname" placeholder="Your Last name"/>
               </div>
             </div>
           </li>
          
 		          <li class="item-content">
 		        <div class="item-inner">
-		          <div class="item-title label">Birth date</div>
+		          <div class="item-title label"><i class="fa fa-clock" aria-hidden="true"></i> Birth date</div>
 		          <div class="item-input">
-		            <input type="date" placeholder="Birth day" value="2014-04-30">
+		            <input type="date" name="dateofbirth" placeholder="Birth day" value="2014-04-30">
 		          </div>
 		      </div>
 		    </li> 
 		    
 		    <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Gender</div>
+              <div class="item-title label"><i class="fa fa-female" aria-hidden="true"></i> Gender</div>
               <div class="item-input">
               <select name="gender">
               <option value="male">Male</option>
@@ -276,10 +371,21 @@
               </div>
             </div>
 		   </li>
+		     <!-- Additional "align-top" class for correct textarea alignment -->
+    <li class="align-top">
+      <div class="item-content">
+        <div class="item-inner">
+          <div class="item-title label">About Me</div>
+          <div class="item-input">
+              <textarea name="about" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+    </li>
 		    <li class="item-content">
             <div class="item-inner">
               <div class="item-input">
-             <a href="#" id="signupButton" class="button list-button button-raised button-fill color-teal ripple-green">Sign Up</a>
+             <a href="#" id="signupButton" class="button list-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign Up</a>
         
               </div>
             </div>
@@ -290,12 +396,13 @@
   
   </div>
   <div id="forgotPaaswordTab" class="tab"> 
+    <div class="login-screen-title">Forgot Password</div>
      <form id="recoverForm" >
-      <div class="list-block inset"">
+      <div class="list-block inset">
         <ul>
           <li class="item-content">
             <div class="item-inner">
-              <div class="item-title label">Email</div>
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
               <div class="item-input">
                 <input type="email" name="recoveryEmail" placeholder="Your email"/>
               </div>
@@ -305,7 +412,7 @@
       </div>
       <div class="list-block">
         <ul>
-          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill color-teal ripple-green">Send Recovery Email</a></li>
+          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill  ripple-green">Send Recovery Email</a></li>
         </ul>
       </div>
     </form> 
@@ -321,15 +428,19 @@
       </div>
     </div>
   </div>
-    <!-- Path to Framework7 Library JS-->
+
+    
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    
+        <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- JAVASCRIPT -->
+
+  
     <!-- Path to your app js-->
-    <script type="text/javascript" src="js/my-app.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
+  <script type="text/javascript" src="js/my-app.js"></script>
+   
+
 </body>
 
 
