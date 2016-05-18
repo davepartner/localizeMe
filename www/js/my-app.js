@@ -25,7 +25,61 @@ var mainView = myApp.addView('.view-main', {
 });
 
 
+//create account
+function createUserAccount(formData){
+	var ref = new Firebase("https://localizeme.firebaseio.com");
+	//ref.once("value", function(data) {
+            // do some stuff once
+    //});
+	
+ref.createUser(formData,
+ function(error, userData) {
+  if (error) {
+    myApp.alert("Error creating account:"+error.message, error);
+  } else {
+    //alert("Successfully created user account with uid:", userData.uid);
+    //log user in and create user profile at  /users
+       loginFire(formData.email, formData.password);
+    		
+    		//create user profile
+			// we would probably save a profile when we register new users on our site
+			// we could also read the profile to see if it's null
+			// here we will just simulate this with an isNewUser boolean
+			var isNewUser = true;
+			ref.onAuth(function(authData) {
+			  if (authData && isNewUser) {
+			    // save the user's profile into the database so we can list users,
+			    // use them in Security and Firebase Rules, and show profiles
+			    ref.child("users").child(authData.uid).set({
+			      provider: authData.provider,
+			      name: getName(authData) //the first part of the users email
+			    });
+			    
+			    //update the user's data to carry the rest of the data
+			    var hopperRef = ref.child(authData.uid);
+				hopperRef.update(formData);
+			  }
+			});
+			// find a suitable name based on the meta info given by each provider
+			function getName(authData) {
+			  switch(authData.provider) {
+			     case 'password':
+			       return authData.password.email.replace(/@.*/, '');
+			     case 'twitter':
+			       return authData.twitter.displayName;
+			     case 'facebook':
+			       return authData.facebook.displayName;
+			  }
+			}
+    
+    
+    myApp.alert("Successfully created account. Logging you in","Success!");
+    localStorage.setItem(formData);
+    myApp.closeModal(); // open Login Screen//load another page with auth form
+  }
+});
 
+}
 
 //create account
 //handle login
@@ -284,7 +338,7 @@ var myMessages = myApp.messages('.messages', {
 
 							  
 				// Init Messagebar
-				var myMessagebar = myApp.messagebar('.messagebar');
+				//var myMessagebar = myApp.messagebar('.messagebar');
 				
 						
 					
@@ -365,41 +419,38 @@ var myMessages = myApp.messages('.messages', {
 				    
 				    
 				  }catch(err1){
-						myApp.alert("As you can see: "+err1.message);
+						//myApp.alert("As you can see: "+err1.message);
 					}
 				 
 			       
 				  // Update conversation flag
 				  conversationStarted = true;
 				});                
-
-
-
-
-                // Create a new GeoQuery instance
+			
+			
+			// Create a new GeoQuery instance
 				var geoQuery = geoFire.query({
 				  center: center,
 				  radius: radiusInKm
 				});
 
-			//	geoQuery.on("key_entered", function(key, location, distance) {
+	 
+	geoQuery.on("key_entered", function(key, location, distance) {
 			///	  var john = key + " entered query at " + location + " (" + distance + " km from center)";
-				
-				
-			
-			
-
-
-
-
-}  
-
 // Add a callback that is triggered for each chat message. .child("receiver_user_id")equalTo(page.query.id)
-			  messagesRef.limitToLast(10).on('child_added', function (snapshot) {
+ 
+ 
+			    
+ 	  messagesRef.child(key).once('value', function (snapshot) {
 			    //GET DATA
+			    
+			    
 			    var data = snapshot.val();
 			    var username = data.name || "anonymous";
 			    var message = data.text;
+			    
+			   // myApp.alert(snapshot.val());
+			    
 			    
 			    if(localStorage.user_id == data.user_id){ //if this is the sender
 					 var messageType = 'sent';
@@ -413,11 +464,11 @@ var myMessages = myApp.messages('.messages', {
 
 			    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
 			   
-			
+		//	myApp.alert("After key added: "+message,"Message");
 			      // Add message
-			     
+
 				try{
-					myMessages.addMessage({
+					 myMessages.addMessage({
 				  	
 				    // Message text
 				    text: message,
@@ -429,14 +480,21 @@ var myMessages = myApp.messages('.messages', {
 				    // Day
 				    day: !conversationStarted ? 'Today' : false,
 				    time: !conversationStarted ? (new Date()).getHours() + ':' + (new Date()).getMinutes() : false
-				  });
+				  })
 				}catch(err){
-					//alert("got the error"+err);
+					myApp.alert("got the error "+err);
 				}
+				
+				
 			  });
 
-				
-			//	});
+
+			
+        });
+
+   }    
+
+
 /* Handles any errors from trying to get the user's current location */
   var errorHandler = function(error) {
     if (error.code == 1) {
@@ -450,7 +508,9 @@ var myMessages = myApp.messages('.messages', {
     }
   };
   
-  
+ 
+
+ 
 function startWatch(){
 if (navigator.geolocation) {
 	var optn = {
@@ -487,12 +547,12 @@ function showError(error) {
 	}
 }
 
-
-
-
-
 getLocation();	
+
+
+
+
   	
   	
-}).trigger();
+});
 

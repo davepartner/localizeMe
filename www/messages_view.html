@@ -1,28 +1,42 @@
-<div class="page" data-page="messages_view">
 
-		 			<!-- Top Navbar. In Material theme it should be inside of the page-->
-		            <div class="navbar">
-		              <div class="navbar-inner">
-		                <div class="center"> <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> Localize Me</div>
-		              </div>
-		            </div>  
-		            
- 				<div class="toolbar messagebar theme-white" style="border: 1px solid #c0c2c0;">
+  <!-- Page, "data-page" contains page name -->
+          <div data-page="messages_view" class="page">
+ 
+            <!-- Top Navbar. In Material theme it should be inside of the page-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center"> <i class="fa fa-map-marker" ></i> LocalizeMe</div>
+              </div>
+              
+   
+            </div>              
+            
+    <div class="subnavbar">
+        <div class="buttons-row">
+         <a href="#" class="link button button-fill back"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                     <a href="messages_view.html?id={{url_query.id}}" class="link button button-fill  "><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+			  	
+        </div>
+    </div> 
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+           
+ 
+            <!-- Scrollable page content -->
+              <!-- messagebar -->
+				  <div class="toolbar messagebar theme-white" style="border: 1px solid #c0c2c0;">
 				    <div class="toolbar-inner">
 				      <textarea placeholder="Message" id='messageInput'></textarea>
-				      <a href="#" class="link sendMessageButton" id="sendMessageButton" style="border: 15px; border-left: 1px solid #c0c2c0">Send</a>
+				      <a href="#" class="link theme-green" id="sendMessageButton" style="border: 15px; border-left: 1px solid #c0c2c0">Send</a>
 				    </div>
 				  </div>
-				  
-				  
-  <div class="page-content messages-content">
-    <div class="messages">
-      <div class="messages "></div>
-    </div>
-    
+				  <!-- messages-content -->
 
-    
-    
-    
-  </div>
-</div>      
+  
+			<div class="page-content messages-content">
+			  
+		
+			  <div class="messages"></div>
+			  </div>
+        
+          </div>
