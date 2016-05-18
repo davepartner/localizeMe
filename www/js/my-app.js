@@ -27,11 +27,18 @@ var mainView = myApp.addView('.view-main', {
 
 //create account
 function createUserAccount(formData){
+	
+	
 	var ref = new Firebase("https://localizeme.firebaseio.com");
 	//ref.once("value", function(data) {
             // do some stuff once
     //});
-	
+	myApp.showPreloader('Wait...')
+    setTimeout(function () {
+        myApp.hidePreloader();
+    }, 2000);
+    
+    
 ref.createUser(formData,
  function(error, userData) {
   if (error) {
@@ -74,7 +81,12 @@ ref.createUser(formData,
     
     
     myApp.alert("Successfully created account. Logging you in","Success!");
-    localStorage.setItem(formData);
+    localStorage.firstname = formData.firstname;
+    localStorage.middlename = formData.middlename;
+    localStorage.lastname = formData.lastname;
+    
+    localStorage.fullname = localStorage.firstname+' '+localStorage.middlename+' '+localStorage.lastname || 'anonymous';
+    
     myApp.closeModal(); // open Login Screen//load another page with auth form
   }
 });
@@ -84,6 +96,7 @@ ref.createUser(formData,
 //create account
 //handle login
 function loginFire(sentEmail,sentPassword){ //get this login from database 
+
 	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.authWithPassword({
   email    : sentEmail,
@@ -114,6 +127,12 @@ ref.authWithPassword({
   }
 });
 
+myApp.showPreloader('Wait...')
+    setTimeout(function () {
+        myApp.hidePreloader();
+    }, 2000);
+    
+    
 }
 
 function changeEmail(){
@@ -236,13 +255,46 @@ ref.onAuth(checkLoggedIn);
   
   
 
- $$('.logout').on('click', function () {
- 	 var ref = new Firebase("https://localizeme.firebaseio.com");
+
+  
+  
+  
+   $$('#logout').on('click', function () {
+ 	myApp.alert("You are loging out", "Logout");
+          	 
+          	   myApp.modal({
+    title:  'Are you sure you wish to logout?',
+    text: '<div class="list-block"></div>',
+    buttons: [
+      {
+        text: 'yes',
+        onClick: function() {
+          	  var ref = new Firebase("https://localizeme.firebaseio.com");
           	myApp.alert("You are loging out", "Logout");
           	  ref.unauth(); //logout
           	  localStorage.removeItem("user_id");
+          	  localStorage.removeItem("fullname");
           	 myApp.loginScreen(); // open Login Screen if user is not logged in 
+          	 
+        }
+      },
+      {
+        text: 'cancel',
+        bold: true,
+        
+      },
+    ]
+  })
  });
+
+
+  
+  
+  
+  
+  
+  
+  
   
 $$(document).on('pageInit', function (e) {
 	//checkLoggedIn();
@@ -390,12 +442,10 @@ var myMessages = myApp.messages('.messages', {
 				  myMessagebar.clear()
 				 
 				  
-				 var name = "Dave"; 
+				 var name = localStorage.fullname; 
 				
 				  	
 				  try{
-				
-				  	 
 					 var newPostRef =  messagesRef.push({
 				  	//userid
 				  	user_id: localStorage.user_id, 
