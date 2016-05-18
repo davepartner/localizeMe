@@ -336,7 +336,12 @@ function createContentPage() {
   	var radius = $$('input[name="radius"]').val();
   	localStorage.radius = radius;
   	//redirect
-  	mainView.router.loadPage('messages_view.html');
+  	if(radius < 1){
+		var usersCurrentRadius = (radius*1000)+' meters radius';
+	}else{
+		var usersCurrentRadius = radius+' kilometers radius';
+	}
+  	mainView.router.loadPage('messages_view.html?selectedRadius='+usersCurrentRadius);
   	
   	});
   	
@@ -442,7 +447,7 @@ var myMessages = myApp.messages('.messages', {
 				  myMessagebar.clear()
 				 
 				  
-				 var name = localStorage.fullname; 
+				 var name = localStorage.fullname || 'anonymous'; 
 				
 				  	
 				  try{
