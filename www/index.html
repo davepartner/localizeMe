@@ -37,10 +37,9 @@
     <script type="text/javascript" src="cordova.js"></script>
 <!-- GeoFire -->
 <script src="js/vendor/geofire.min.js"></script>
-      <!-- Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script> 
-  <!-- Lo-Dash -->
-  <script src="js/vendor/lodash.min.js"></script> 
+      <!-- Google Maps 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script> -->
+  <!-- Lo-Dash --> 
   
     <!-- Good default declaration:
     * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
@@ -63,7 +62,96 @@
     <link rel="stylesheet" href="css/my-app.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script>
   
+   <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 20%;
+      }
+    </style>
+    
+    		 
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script>
+  <script>
+  
+  
+		  /* Uses the HTML5 geolocation API to get the current user's location */
+		  var getLocation = function() {
+		    if (typeof navigator !== "undefined" && typeof navigator.geolocation !== "undefined") {
+		      //log("Asking user to get their location");
+		      navigator.geolocation.getCurrentPosition(geolocationCallback, errorHandler);
+		    } else {
+		      //log("Your browser does not support the HTML5 Geolocation API, so this demo will not work.")
+		    }
+		  };
+  
+    /* Callback method from the geolocation API which receives the current user's location */
+  var geolocationCallback = function(location) {
+    var latitude = location.coords.latitude;
+    var longitude = location.coords.longitude;
+  
+  google.maps.event.addDomListener(window, 'load', initialize(latitude, longitude) );
+   
+  }
+        // In the following example, markers appear when the user clicks on the map.
+      // Each marker is labeled with a single alphabetical character.
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var labelIndex = 0;
+      
+      function initialize(getlatitude, getlongitude) {
+        var bangalore = { lat: getlatitude, lng: getlongitude };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: bangalore
+        });
+
+        // This event listener calls addMarker() when the map is clicked.
+        google.maps.event.addListener(map, 'click', function(event) {
+          addMarker(event.latLng, map);
+        });
+
+        // Add a marker at the center of the map.
+        addMarker(bangalore, map);
+      }
+
+      // Adds a marker to the map.
+      function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          label: labels[labelIndex++ % labels.length],
+          map: map
+        });
+      }
+
+      
+
+  
+  
+    /* Handles any errors from trying to get the user's current location */
+  var errorHandler = function(error) {
+    if (error.code == 1) {
+      log("Error: PERMISSION_DENIED: User denied access to their location");
+    } else if (error.code === 2) {
+      log("Error: POSITION_UNAVAILABLE: Network is down or positioning satellites cannot be reached");
+    } else if (error.code === 3) {
+      log("Error: TIMEOUT: Calculating the user's location too took long");
+    } else {
+      log("Unexpected error code")
+    }
+  };
+
+  // Get the current user's location
+  getLocation();
+
+    </script>
 </head>
 
 <body class="theme-pink">
@@ -98,24 +186,11 @@
  
   
 			<div class="page-content">
-			<style>
-				.blinks{
-					@-webkit-keyframes blinker {  
-					  from { opacity: 1.0; }
-					  to { opacity: 0.0; }
-					}
-
-					.waitingForConnection {
-					  -webkit-animation-name: blinker;  
-					  -webkit-animation-iteration-count: infinite;  
-					  -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
-					  -webkit-animation-duration: 1.7s; 
-					}  
-				}    
-			</style>
-			<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+		
+		 <div id="map"></div>
+			<!--<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
 	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
-			 </div>    
+			 </div> -->    
 			 <div class="content-block-title">Show me messages within this
 			 </div>
 			  <div class="longitudeHidden"></div>

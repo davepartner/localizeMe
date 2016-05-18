@@ -296,6 +296,16 @@ function createContentPage() {
  myApp.onPageInit('messages_view', function(page) {
 
 
+ myApp.showPreloader('Scanning location...');
+    setTimeout(function () {
+        myApp.hidePreloader();
+    }, 2000);
+   
+     /* myApp.showIndicator();
+    setTimeout(function () {
+        myApp.hideIndicator();
+    }, 2000);
+     */
 // Conversation flag
 var conversationStarted = false;
 
@@ -437,7 +447,6 @@ var myMessages = myApp.messages('.messages', {
 	 
 	geoQuery.on("key_entered", function(key, location, distance) {
 			///	  var john = key + " entered query at " + location + " (" + distance + " km from center)";
-// Add a callback that is triggered for each chat message. .child("receiver_user_id")equalTo(page.query.id)
  
  
 			    
@@ -446,7 +455,7 @@ var myMessages = myApp.messages('.messages', {
 			    
 			    
 			    var data = snapshot.val();
-			    var username = data.name || "anonymous";
+			    var username = data.name || "";
 			    var message = data.text;
 			    
 			   // myApp.alert(snapshot.val());
@@ -476,7 +485,8 @@ var myMessages = myApp.messages('.messages', {
 				    type: messageType,
 				    // Avatar and name:
 				    //avatar: avatar,
-				    //name: john,
+				    name: username,
+				    //label: key + " entered query at " + location + " (" + distance + " km from center)",
 				    // Day
 				    day: !conversationStarted ? 'Today' : false,
 				    time: !conversationStarted ? (new Date()).getHours() + ':' + (new Date()).getMinutes() : false
@@ -491,6 +501,68 @@ var myMessages = myApp.messages('.messages', {
 
 			
         });
+
+
+
+
+//show on map
+ // In the following example, markers appear when the user clicks on the map.
+      // Each marker is labeled with a single alphabetical character.
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var labelIndex = 0;
+
+      function initialize() {
+        var bangalore = { lat: 12.97, lng: 77.59 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: center
+        });
+
+        // This event listener calls addMarker() when the map is clicked.
+        google.maps.event.addListener(map, 'click', function(event) {
+          addMarker(event.latLng, map);
+        });
+
+        // Add a marker at the center of the map.
+        addMarker(center, map);
+      }
+
+      // Adds a marker to the map.
+      function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          label: labels[labelIndex++ % labels.length],
+          map: map
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+      
+      //
+      
+      
+      
+      
+      
+      
+      
+      
+      $$('.view-me-on-map').on('click', function () {
+		  var modal = myApp.modal({
+		    title: 'Map',
+		    text: 'Your current location',
+		    afterText:  '<div id="map"></div>',
+		    buttons: [
+		      {
+		        text: 'Ok'
+		      }
+		    ]
+		  })
+		  myApp.swiper($$(modal).find('.swiper-container'), {pagination: '.swiper-pagination'});
+		});
+
 
    }    
 
