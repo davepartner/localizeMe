@@ -99,6 +99,8 @@
   <access origin="*"/>
    <access origin="*.google.com"/>
     <access origin="*.googleapis.com"/>
+    <access origin="*.firebaseio.com"/>
+    <access origin="https://*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
