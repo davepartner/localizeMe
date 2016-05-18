@@ -97,12 +97,15 @@
     <splash src="www/res/screen/windows/SplashScreenPhone.scale-240.png" platform="windows" width="1152" height="1920"/>
   </platform>
   <access origin="*"/>
+   <access origin="*.google.com"/>
+    <access origin="*.googleapis.com"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
   <allow-intent href="sms:*"/>
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
+  
   <platform name="android">
     <allow-intent href="market:*"/>
   </platform>
