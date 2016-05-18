@@ -297,7 +297,7 @@ ref.onAuth(checkLoggedIn);
   
   
 $$(document).on('pageInit', function (e) {
-	//checkLoggedIn();
+	checkLoggedIn();
 	
 });
 
