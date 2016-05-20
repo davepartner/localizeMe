@@ -397,7 +397,7 @@ var myMessages = myApp.messages('.messages', {
 			     	//get user current location
 					function getLocation() {
 					    if (navigator.geolocation) {
-					        navigator.geolocation.getCurrentPosition(showPosition);
+					        navigator.geolocation.getCurrentPosition(showPosition2);
 					    } else {
 					       alert("Geolocation is not supported by this browser.");
 					    }
@@ -410,7 +410,7 @@ var myMessages = myApp.messages('.messages', {
 	
 					
 
-					function showPosition(position) {
+					function showPosition2(position) {
 					      userLatitude = position.coords.latitude;
 					      userLongitude = position.coords.longitude; 
 					      $$('.latitudeHidden').text(userLatitude);
@@ -611,3 +611,30 @@ getLocation();
   	
 });
 
+
+
+//code to prevent back button misbehaviour
+document.addEventListener('backbutton', function (e) {
+            e.preventDefault();
+            /* Check for open panels */
+            if ($$('.panel.active').length > 0) {
+                f7.closePanel();
+                return;
+            }
+            /* Check for go back in history */
+            var view = f7.getCurrentView();
+            if (!view) return;
+            if (view.history.length > 1) {
+                view.router.back();
+                return;
+            }
+            /* Quit app */
+            navigator.notification.confirm(
+                'Exit Application ?',              // message
+                function (n) {
+                    if (n == 1) navigator.app.exitApp(); 
+                },
+                'Bite To Eat',        // title
+                ['OK', 'Cancel']      // button labels
+            );
+        }, false);
