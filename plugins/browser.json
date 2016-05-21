@@ -8,69 +8,69 @@
     },
     "installed_plugins": {
         "cordova-plugin-battery-status": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-media-capture": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-contacts": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-device-motion": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-device-orientation": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-globalization": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-media": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-vibration": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "ng.localizeme.mobile7"
+            "PACKAGE_NAME": "com.googleMap.g7"
         }
     }
 }

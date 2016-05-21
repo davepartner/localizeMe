@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval' 'unsafe-inline'; style-src * 'unsafe-inline'; media-src *" /> -->
+     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline'  'unsafe-eval' data: gap: 'unsafe-inline' https://ssl.gstatic.com;" />
+    
+    <script src="js/firebase.js"></script>
+  <script src='js/jquery.js'></script>
+  
+      <!-- Google Maps 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script> -->
+  <!-- Lo-Dash --> 
+  
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <title>LocalizeMe</title>
+    
+       <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+  
+   <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      /*#map {
+        height: 25%;
+      }*/
+    </style>
+    
+    		 
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script>
+  <script>
+  
+navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 30000 });
+function onSuccess(position) {
+var lat=position.coords.latitude;
+var lang=position.coords.longitude;
+
+//Google Maps
+var myLatlng = new google.maps.LatLng(lat,lang);
+var mapOptions = {zoom: 15,center: myLatlng}
+var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+var marker = new google.maps.Marker({position: myLatlng,map: map});
+}
+function onError(error) {
+alert('code: ' + error.code + '\n' +
+'message: ' + error.message + '\n');
+}
+google.maps.event.addDomListener(window, 'load', onSuccess);
+    </script>
+    
+    
+  
+    <script type="text/javascript" src="cordova.js"></script>
+<!-- GeoFire -->
+<script src="js/vendor/geofire.min.js"></script>
+</head>
+
+<body class="theme-pink">
+
+
+  <div class="views">
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-fixed toolbar-fixed">
+          <!-- Page, "data-page" contains page name -->
+          <div data-page="index" class="page">
+ 
+            <!-- Top Navbar. In Material theme it should be inside of the page-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center"> <i class="fa fa-map-marker" ></i> LocalizeMe</div>
+              </div>
+            </div>              
+            
+            <!-- Sub navbar
+    <div class="subnavbar">
+        <div class="buttons-row">
+            <a href="#tab1" class="button active">My Doc</a>
+            <a href="#tab2" class="button">Find</a>
+            <a href="#tab3" class="button">History</a>
+        </div>
+    </div> -->
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+           
+ 
+  
+			<div class="page-content" style="padding-top: 70px">
+		
+		  <div id="map" style="width: 100%; height: 200px; display: block;">
+                
+     </div>
+     
+			<!--<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
+			 </div> -->    
+			 
+			 
+			 <div class="list-block">
+			 <p class="color-gray">
+			 Show me messages within this
+			 </p>
+					  <ul>
+					    <!-- Single radio input -->
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.03"  class="radius">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Building</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.1" >
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Compound</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="0.5" >
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">Neighbourhood</div>
+					        </div>
+					      </label>
+					    </li>
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="20" >
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">City</div>
+					        </div>
+					      </label>
+					    </li>
+					    <li>
+					      <label class="label-radio item-content">
+					        <!-- Checked by default -->
+					        <input type="radio" name="radius" value="50" checked="checked">
+					        <div class="item-media">
+					          <i class="icon icon-form-radio"></i>
+					        </div>
+					        <div class="item-inner">
+					          <div class="item-title">State</div>
+					        </div>
+					      </label>
+					    </li>
+					    
+					  </ul>
+			</div>    
+        
+                  		<div class="card">
+						       <p> 
+						        <a href="#" class="button button-big button-fill button-raised enter-chat">
+						         Enter Chat <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+						      </p>
+						       
+						       <p>
+						        <a href="#" class="button button-big button-fill button-raised" id="logout">
+						        <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+						      </p>
+						</div> 
+			 		 </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="login-screen">
+    <div class="view">
+      <div class="page">
+      <div class="page-content login-screen-content">
+    <div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
+			 </div>
+      <div class="content-block">
+    <!-- Buttons row as tabs controller -->
+    <div class="buttons-row">
+      <!-- Link to 1st tab, active -->
+      <a href="#loginTab" class="tab-link active button button-raised button-fill"><i class="fa fa-key" aria-hidden="true"></i> Login</a>
+      <!-- Link to 2nd tab -->
+      <a href="#signupTab" class="tab-link button button-raised button-fill"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Signup</a>
+      <!-- Link to 3rd tab -->
+      <a href="#forgotPaaswordTab" class="tab-link button button-raised button-fill"><i class="fa fa-check-square-o" aria-hidden="true"></i> Forgot?</a>
+    </div>
+  </div>
+  
+  
+  
+    <div class="tabs-animated-wrap">
+        
+        <!-- Tabs, tabs wrapper -->
+        <div class="tabs">
+  <div id="loginTab" class="tab">  
+  <div class="login-screen-title">Login</div>
+  <form id="loginForm" class="list-block">
+      <div class="list-block inset">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
+              <div class="item-input">
+                <input type="email" name="loginemail" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-key" aria-hidden="true"></i> Password</div>
+              <div class="item-input">
+                <input type="password" name="loginpassword" placeholder="Your password"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li><a href="#" class="button login-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In</a></li>
+        </ul>
+      </div>
+    </form> 
+
+</div>
+
+
+  <div id="signupTab" class="tab"> 
+    <div class="login-screen-title">Signup</div>
+       <form id="signupForm">
+      <div class="list-block inset">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
+              <div class="item-input">
+                <input type="email" name="email" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-key" aria-hidden="true"></i> Password</div>
+              <div class="item-input">
+                <input type="password" name="password" placeholder="Your password"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> First name</div>
+              <div class="item-input">
+                <input type="text" name="firstname" placeholder="Your Firstname"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> Middle name</div>
+              <div class="item-input">
+                <input type="text" name="middlename" placeholder="Your Middle name"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> Last name</div>
+              <div class="item-input">
+                <input type="text" name="lastname" placeholder="Your Last name"/>
+              </div>
+            </div>
+          </li>
+         
+		          <li class="item-content">
+		        <div class="item-inner">
+		          <div class="item-title label"><i class="fa fa-clock" aria-hidden="true"></i> Birth date</div>
+		          <div class="item-input">
+		            <input type="date" name="dateofbirth" placeholder="Birth day" value="2014-04-30">
+		          </div>
+		      </div>
+		    </li> 
+		    
+		    <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-female" aria-hidden="true"></i> Gender</div>
+              <div class="item-input">
+              <select name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              </select>
+              </div>
+            </div>
+		   </li>
+		     <!-- Additional "align-top" class for correct textarea alignment -->
+  
+		    <li class="item-content">
+            <div class="item-inner">
+              <div class="item-input">
+             <a href="#" id="signupButton" class="button list-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign Up</a>
+        
+              </div>
+            </div>
+		   </li>
+        </ul>
+      </div>
+    </form>  
+  
+  </div>
+  <div id="forgotPaaswordTab" class="tab"> 
+    <div class="login-screen-title">Forgot Password</div>
+     <form id="recoverForm" >
+      <div class="list-block inset">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</div>
+              <div class="item-input">
+                <input type="email" name="recoveryEmail" placeholder="Your email"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill  ripple-green">Send Recovery Email</a></li>
+        </ul>
+      </div>
+    </form> 
+  </div>
+  <div id="changePsswordTab" class="tab"> Change Password</div>
+  
+  </div>
+  </div>
+  
+  
+  
+  </div>
+      </div>
+    </div>
+  </div>
+
+    
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    
+        <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- JAVASCRIPT -->
+
+  
+    <!-- Path to your app js-->
+  <script type="text/javascript" src="js/my-app.js"></script>
+   
+
+</body>
+
+
+</html>
