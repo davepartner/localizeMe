@@ -135,6 +135,23 @@ myApp.showPreloader('Wait...')
     
 }
 
+
+//function to create anything
+function updateAnything(formData, childVar){
+	var postsRef = new Firebase("https://localizeme.firebaseio.com/");
+     ref = postsRef.child(childVar);
+     ref.update(formData,   function(error) {
+  if (error) {
+    myApp.alert("Data could not be saved. :" + error);
+  } else {
+   // myApp.alert("Update successful.","Updated");
+  }
+});
+}
+
+
+
+
 function changeEmail(){
 	var ref = new Firebase("https://localizeme.firebaseio.com");
 ref.changeEmail({
@@ -331,19 +348,7 @@ function createContentPage() {
 }
 
 
- //recover email
-  $$('.enter-chat').on('click', function () {
-  	var radius = $$('input[checked="checked"]').val();
-  	localStorage.radius = radius;
-  	//redirect
-  	if(radius < 1){
-		var usersCurrentRadius = (radius*1000)+' meters radius';
-	}else{
-		var usersCurrentRadius = radius+' kilometers radius';
-	}
-  	mainView.router.loadPage('messages_view.html?selectedRadius='+usersCurrentRadius);
-  	
-  	});
+ 
   	
   	
 
@@ -352,6 +357,14 @@ function createContentPage() {
  	
  myApp.onPageInit('messages_view', function(page) {
 
+localStorage.radius = page.query.selectedRadius;
+  	//redirect
+  	if(localStorage.radius < 1){ //i agree, this is stuoid. Reassigning new values to page query. Plain stupid, but no time
+		page.query.selectedRadius = usersCurrentRadius = (localStorage.radius*1000)+' meters radius';
+	}else{
+		page.query.selectedRadius = localStorage.radius+' kilometers radius';
+	}
+	
 
  myApp.showPreloader('Scanning location...');
     setTimeout(function () {
@@ -416,7 +429,7 @@ var myMessages = myApp.messages('.messages', {
 					      $$('.latitudeHidden').text(userLatitude);
 					      $$('.longitudeHidden').text(userLongitude);
 					      
-					      				myApp.alert("got the error ");	
+					      				//myApp.alert("got the error ");	
 					// Global map variable
 					var map;
 					/*
@@ -429,15 +442,28 @@ var myMessages = myApp.messages('.messages', {
 
 					var center = [userLatitude, userLongitude];
 					//var center = locations["userLocation"];
-
+					
 
 						
 					// Query radius
 					var radiusInKm = Number(localStorage.radius) || Number(0.3);
-
-
+                    var formDataUser = {};
+                    formDataUser.latitude = userLatitude;
+					formDataUser.longitude = userLongitude;
+					var geoFireUsers = new GeoFire(geomessagesRef.child("geousers"));
+                    geoFireUsers.set(localStorage.user_id, center);
+				    
+				    
+				    
+                    
 				// Handle message
 				$$('.messagebar .link').on('click', function () { 
+				
+				
+				
+                    
+                    
+                    
 				  // Message text
 				  var messageText = myMessagebar.value().trim();
 				  // Exit if empy message
@@ -498,7 +524,7 @@ var myMessages = myApp.messages('.messages', {
 				  center: center,
 				  radius: radiusInKm
 				});
-
+			
 	 
 	geoQuery.on("key_entered", function(key, location, distance) {
 			///	  var john = key + " entered query at " + location + " (" + distance + " km from center)";
@@ -559,12 +585,75 @@ var myMessages = myApp.messages('.messages', {
 
 
 
-
+//fiind users around center for the right panel
+// Create a new GeoQuery instance
+				var geoQuery = geoFireUsers.query({
+				  center: center,
+				  radius: radiusInKm
+				});
 
       
+      var mySearchbar = myApp.searchbar('.searchbar', {
+		    searchList: '.list-block-search',
+		    searchIn: '.item-title'
+		}); 
       
-      
+        
+	geoQuery.on("key_entered", function(key, location, distance) {
+			///	  var john = key + " entered query at " + location + " (" + distance + " km from center)";
+ 
+ 
+		  //get the list from database
+	   var userRef = new Firebase("https://localizeme.firebaseio.com/users");	    
+ 	  userRef.child(key).once('value', function (snapshot) {
+			    //GET DATA
+			    
+			    
+			    var data = snapshot.val();
+			    var username = data.username || "";
+			    var firstname = data.firstname || "";
+			    var middlename = data.middlename || "";
+			    var lastname = data.lastname || "";
+			    var uname = firstname+' '+middlename+' '+lastname;
+			    var gender = data.gender || "";
+			    var get_user_id = snapshot.key();
+			   // myApp.alert(snapshot.val());
+			    
+			    
+			 
+			    var day = data.day;
+			    var time = data.time;
+			    
+			    
 
+			    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
+			   
+			   var messageList = $$('.users-list-block');
+             
+		   messageList.append('<li>'+
+		      '<a href="doctors_list.html?user_id='+get_user_id+'&categoryname='+uname+'" class="item-link item-content" data-context-name="languages">'+
+		          '<!--<div class="item-media"><i class="fa fa-plus-square" aria-hidden="true"></i></div>-->' +
+		          '<div class="item-inner">'+
+		            '<div class="item-title"><i class="fa fa-plus-square" aria-hidden="true"></i> '+uname+'</div>'+
+		          '</div>'+
+		      '</a>'+
+		    '</li>');
+				
+				
+			  });
+
+
+			
+        });
+
+
+       
+       
+       
+      myApp.openPanel('right');
+     $$('.panel-close').on('click', function (e) {
+        myApp.closePanel();
+    });
 
    }    
 
