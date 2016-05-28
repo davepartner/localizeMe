@@ -1,0 +1,39 @@
+
+          <div data-page="complaints_view" class="page">
+ 
+            <!-- Top Navbar. In Material theme it should be inside of the page-->
+            <div class="navbar">
+              <div class="navbar-inner">
+               <div class="left"><a href="#" style="float: left;" class="left link button button-fill back"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></div>
+                <div class="center"> <i class="fa fa-heart-o" ></i> {{url_query.name}}</div>
+                 <div class="right"><a href="messages_view.html?selectedRadius=50&name=State" class="link button button-fill  "><i class="fa fa-comments-o" aria-hidden="true"></i></a>
+			  	</div>
+              </div>
+              
+   
+            </div>              
+
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+           
+ 
+            <!-- Scrollable page content -->
+              <!-- messagebar -->
+				  <div class="toolbar messagebar theme-white" style="border: 1px solid #c0c2c0;">
+				    <div class="toolbar-inner">
+				      <textarea placeholder="Message" id='messageInput'></textarea>
+				      <a href="#" class="link theme-green" id="sendMessageButton" style="border: 15px; border-left: 1px solid #c0c2c0">Send</a>
+				    </div>
+				  </div>
+				  <!-- messages-content -->
+
+  
+			<div class="page-content messages-content">
+			  <div class="content-block">
+              </div>
+			
+		
+			  <div class="messages "></div>
+			  </div>
+        
+          </div>

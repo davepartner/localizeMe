@@ -1,0 +1,97 @@
+
+  <!-- Page, "data-page" contains page name -->
+ <div data-page="messages_view" class="page">
+ 
+
+
+            <!-- Top Navbar. In Material theme it should be inside of the page
+            <div class="navbar">
+              <div class="navbar-inner">
+              
+              
+              </div>
+              
+   
+            </div>     -->
+            
+            
+              <div class="navbar">
+			    <div class="navbar-inner">
+			      <!-- In data-popover attribute we specify CSS selector of popover we need to open -->
+			      <div class="left"><a href="#" style="float: left;" class="left link button button-fill back"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></div>
+			        <div class="center"> <i class="fa fa-map-marker" ></i> {{url_query.name}} {{url_query.selectedRadius}}km radius </div>
+			      <div class="right"><a href="#" data-panel="right" class="open-panel link"><i class="fa fa-users" aria-hidden="true"></i></a></div>
+			    </div>
+			  </div>         
+            
+    
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+           
+ 
+            <!-- Scrollable page content -->
+              <!-- messagebar -->
+				  <div class="toolbar messagebar theme-white" style="border: 1px solid #c0c2c0;">
+				    <div class="toolbar-inner">
+				      <textarea placeholder="Message" id='messageInput'></textarea>
+				      <a href="#" class="link theme-green" id="sendMessageButton" style="border: 15px; border-left: 1px solid #c0c2c0">Send</a>
+				    </div>
+				  </div>
+				  <!-- messages-content -->
+
+          
+          
+                  
+
+           <!-- Panels Overlay -->
+  <div class="panel-overlay"></div>
+
+ 
+  <!-- Right Panel with Cover effect -->
+  <div class="panel panel-right panel-cover">
+  <div style="float: right; padding: 5px; "><a href="#" class="link close-panel">X</a></div>
+    <div class="content-block">
+      <p>People within this {{url_query.name}} ({{url_query.selectedRadius}}km radius)</p>
+      
+                    <!-- Search Bar -->
+    <form class="searchbar theme-gray">
+        <div class="searchbar-input">
+            <input type="search" placeholder="Search">
+            <a href="#" class="searchbar-clear"></a>
+        </div>
+        <a href="#" class="searchbar-cancel">Cancel</a>
+    </form>
+    
+    <!-- Search Bar overlay-->
+    <div class="searchbar-overlay"></div>
+    
+    
+     <div class="content-block searchbar-not-found">
+                Nothing found
+        </div>
+  {{firstname}}
+        <div class="list-block searchbar-found near-users-list virtual-list">
+           
+		       <ul class="users-list-block list-block-search">
+		       	
+		       </ul>
+        </div>
+         
+    
+    
+    
+    </div>
+  </div>
+ 
+ 
+			<div class="page-content messages-content">
+		         
+		
+			  <div class="messages">
+			  
+			  	
+			  </div>
+			  </div>
+        
+       
+          </div>
