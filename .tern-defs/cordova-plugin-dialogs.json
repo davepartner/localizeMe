@@ -1,0 +1,16 @@
+{
+    "!name": "cordova-plugin-dialogs",
+    "!define": {
+        "!modules": {
+            "beep": "fn(quantity: ?)"
+        }
+    },
+    "!plugin-version": "1.2.1",
+    "window": {
+        "navigator": {
+            "notification": {
+                "beep": "!modules.beep"
+            }
+        }
+    }
+}

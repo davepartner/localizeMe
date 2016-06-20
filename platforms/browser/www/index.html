@@ -117,7 +117,7 @@ var lang=position.coords.longitude;
 
 //Google Maps
 var myLatlng = new google.maps.LatLng(lat,lang);
-var mapOptions = {zoom: 15,center: myLatlng,enableHighAccuracy: true,  maximumAge: 30000,timeout : 27000}
+var mapOptions = {zoom: 15,center: myLatlng,enableHighAccuracy: true,  maximumAge: 30000,timeout : 15000}
 var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 var marker = new google.maps.Marker({position: myLatlng,map: map});
 
@@ -163,16 +163,16 @@ ReverseGeocode(lat, lang);
 function showError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
+            alert("You denied the request for Geolocation. Please refresh and try again");
             break;
         case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
+           alert("Location information is unavailable.");
             break;
         case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
+            alert("The request to get user location timed out on index.");
             break;
         case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
+           alert("An unknown error occurred.");
             break;
     }
 }
@@ -279,14 +279,13 @@ document.addEventListener('backbutton', function (e) {
 				</div>
 			
 				  
-            
-        <!--
+           
                   		<div class="card">
 						       <p>
 						        <a href="#" class="button button-big button-fill button-raised" id="logout">
 						        <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
 						      </p>
-						</div> -->
+						</div> 
 			 		 </div>
         
           </div>

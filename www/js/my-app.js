@@ -27,6 +27,11 @@ var mainView = myApp.addView('.view-main', {
 });
 
 
+
+
+if(typeof localStorage.localizeme_user_id === "undefined" || localStorage.localizeme_user_id === null){
+	 myApp.loginScreen(); 
+}
 //create account
 function createUserAccount(formData){
 	
@@ -121,12 +126,13 @@ ref.authWithPassword({
         myApp.alert("The specified user account does not exist.","Error");
         break;
       default:
-        myApp.alert("Error logging user in:", error);
+       // myApp.alert(error,"Error logging user in:");
+        myApp.alert("Please cross-check your network connectivity","Error logging in:");
     }
     return false; //required to prevent default router action
   } else {
   	//save data in local storage
-  	localStorage.user_id = authData.uid;
+  	localStorage.localizeme_user_id = authData.uid;
   	
      myApp.alert("Login successful ", 'Success!');
        myApp.closeModal('.login-screen'); //closelogin screen
@@ -134,7 +140,7 @@ ref.authWithPassword({
   }
 });
 
-myApp.showPreloader('Wait...')
+myApp.showPreloader('Loading map...')
     setTimeout(function () {
         myApp.hidePreloader();
     }, 2000);
@@ -159,20 +165,6 @@ function updateAnything(formData, childVar){
 
 
 
-function changeEmail(){
-	var ref = new Firebase("https://localizeme.firebaseio.com");
-ref.changeEmail({
-  oldEmail : "bobtony@firebase.com",
-  newEmail : "bobtony@google.com",
-  password : "correcthorsebatterystaple"
-}, function(error) {
-  if (error === null) {
-    console.log("Email changed successfully");
-  } else {
-    console.log("Error changing email:", error);
-  }
-});
-}
 
 function changeEmail(){
 	var ref = new Firebase("https://localizeme.firebaseio.com");
@@ -234,7 +226,7 @@ ref.removeUser({
 
 // Create a callback which logs the current auth state
 function checkLoggedIn(authData) {
-  if (localStorage.user_id != null) {
+  if (localStorage.localizeme_user_id != null) {
     
        myApp.closeModal(); //closelogin screen
   } else {
@@ -249,8 +241,7 @@ ref.onAuth(checkLoggedIn);
 
   
   function logout(){
-  	 	myApp.alert("You are loging out", "Logout");
-          	 
+  	 		 
           	   myApp.modal({
     title:  'Are you sure you wish to logout?',
     text: '<div class="list-block"></div>',
@@ -318,13 +309,35 @@ ref.onAuth(checkLoggedIn);
 
   
 
-  
+ $$('.demo-progressbar-load-hide .button').on('click', function () {
+    var container = $$('.demo-progressbar-load-hide p:first-child');
+    if (container.children('.progressbar').length) return; //don't run all this if there is a current progressbar loading
+ 
+    myApp.showProgressbar(container, 0);
+ 
+    // Simluate Loading Something
+    var progress = 0;
+    function simulateLoading() {
+        setTimeout(function () {
+            var progressBefore = progress;
+            progress += Math.random() * 20;
+            myApp.setProgressbar(container, progress);
+            if (progressBefore < 100) {
+                simulateLoading(); //keep "loading"
+            }
+            else myApp.hideProgressbar(container); //hide
+        }, Math.random() * 200 + 200);
+    }
+    simulateLoading();
+}); 
   
   
   
   
 $$(document).on('pageInit', function (e) {
 	checkLoggedIn();
+	
+	
 	
 });
 
@@ -359,7 +372,7 @@ function createContentPage() {
 
 
 			 //get users location using their longitude and lattitude
-			function ReverseGeocode(latitude, longitude)																																																																																				{
+			function ReverseGeocode(latitude, longitude){
 						    var reverseGeocoder = new google.maps.Geocoder();
 						    var currentPosition = new google.maps.LatLng(latitude, longitude);
 						    reverseGeocoder.geocode({'latLng': currentPosition}, function(results, status) {
@@ -367,18 +380,39 @@ function createContentPage() {
 						            if (status == google.maps.GeocoderStatus.OK) {
 						                    if (results[0]) {
 						                  // $$('.yourCurrentLocation').html('Address : ' + results[0].formatted_address + ',' + 'Type : ' + results[0].types+ '<br/>');
-						                    $$('.yourCurrentLocation').html('Find posts and people around this:'+ 
-						                    /*'<a href="messages_view.html?selectedRadius=0.1&name='+results[0].address_components[0].short_name+'" >' + 
-						                    results[0].address_components[0].long_name +*/
-						                    '<a href="messages_view.html?selectedRadius=0.1&name=compound"> Compound</a>,'+
-						                    ' <a href="messages_view.html?selectedRadius=0.5&name='+results[0].address_components[1].long_name+'" >'+ 
-						                    results[0].address_components[1].long_name + 
-						                    '</a>, <a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[2].long_name+'" >'+ 
-						                    results[0].address_components[2].long_name+'</a>, '+ 
-						                    '<a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[3].long_name+'" >'+ 
-						                    results[0].address_components[3].long_name+'</a>'+ 
-						                    ', <a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[4].long_name+'" >'+ 
-						                    results[0].address_components[4].long_name+'</a>');
+						            $$('.yourCurrentLocation').html('<div class="content-block-title">Click any of the links below to chat with and discover people around there</div>'+
+											'<div class="list-block">'+
+											  '<ul>'+
+						                         '<li>'+ 
+						                    '<a class="item-content" href="messages_view.html?selectedRadius=0.5&name='+results[0].address_components[1].long_name+'" >'+
+											     '<div class="item-inner">'+
+												 '<div class="item-title">'+
+						                         results[0].address_components[1].long_name + 
+						                         '</div></div></a></li>'+
+						                         '<li>'+ 
+						                    '<a class="item-content" href="messages_view.html?selectedRadius=1&name='+results[1].address_components[1].long_name+'" >'+
+											     '<div class="item-inner">'+
+												 '<div class="item-title">'+
+						                         results[1].address_components[1].long_name + 
+						                         '</div></div></a></li>'+
+						                         '<li>'+ 
+						                    '<a class="item-content" href="messages_view.html?selectedRadius=5&name='+results[2].address_components[1].long_name+'" >'+
+											     '<div class="item-inner">'+
+												 '<div class="item-title">'+
+						                         results[2].address_components[1].long_name + 
+						                         '</div></div></a></li>'+
+						                         '<li>'+ 
+						                    '<a class="item-content" href="messages_view.html?selectedRadius=20&name='+results[3].address_components[1].long_name+'" >'+
+											     '<div class="item-inner">'+
+												 '<div class="item-title">'+
+						                         results[3].address_components[1].long_name + 
+						                         '</div></div></a></li>'+'<li>'+ 
+						                    '<a class="item-content" href="messages_view.html?selectedRadius=50&name='+results[4].address_components[1].long_name+'" >'+
+											     '<div class="item-inner">'+
+												 '<div class="item-title">'+
+						                         results[4].address_components[1].long_name + 
+						                         '</div></div></a></li>'+
+						                         '</ul> </div>');
 						                    }
 						            else {
 						                    $$('.yourCurrentLocation').html('Unable to detect your address.');
@@ -419,7 +453,7 @@ function createContentPage() {
 
 		function showError(error) {
 		    switch(error.code) {
-		        case error.PERMISSION_DENIED:
+		        /*case error.PERMISSION_DENIED:
 		           myApp.alert("User denied the request for Geolocation.");
 		            break;
 		        case error.POSITION_UNAVAILABLE:
@@ -430,46 +464,123 @@ function createContentPage() {
 		            break;
 		        case error.UNKNOWN_ERROR:
 		            myApp.alert("An unknown error occurred.");
-		            break;
+		            break;*/
 		    }
 		}
 		  
  
- 	$$('.myProfile').click(function(){
- 		mainView.router.loadPage('users_view.html?user_id='+localStorage.user_id);
- 	});
- myApp.onPageInit('users_view', function(page) {
+ 	
+ myApp.onPageInit('home', function(page) {
+ 	
+
+ 
+			var isMobile = {  
+			  Opera: function() {
+			       //return navigator.userAgent.match(/Opera Mini/i);
+			       alert("This app is not destinied for opera mini, please try other browsers like chrome, mozilla or safari");
+			    },/*
+			    Android: function() {
+			        return navigator.userAgent.match(/Android/i);
+			    },
+			    BlackBerry: function() {
+			        return navigator.userAgent.match(/BlackBerry/i);
+			    },
+			    iOS: function() {
+			        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+			    },
+			  
+			    Windows: function() {
+			        return navigator.userAgent.match(/IEMobile/i);
+			    },
+			    any: function() {
+			        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+			    }*/
+			};
+			 	
+ 		});
  	
  	
-		 myApp.showPreloader('Scanning location...');
+ 	
+
+myApp.onPageInit('users_edit', function(page) {
+	
+	
+	//fill up form from databse
+	var usersRef = new Firebase('https://localizeme.firebaseio.com/users/'+page.query.user_id);
+	
+		 	usersRef.once('value', function(snapshot) {
+			    //GET DATA
+			  //  var formData = snapshot.val();
+			    
+			    var formData = {
+				    'firstname': 'John',
+				    'email': 'john@doe.com',
+				    'gender': 'female',
+				    'switch': ['yes'],
+				    'slider': 10
+				  }
+				  
+				  
+  					myApp.formFromJSON('#editProfileForm', formData);
+			    });
+  
+  
+});
+	
+	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+function myProfile(){
+	mainView.router.loadPage('users_view.html?user_id='+localStorage.localizeme_user_id);
+	    }
+ 		
+
+	
+	myApp.onPageInit('users_view', function(page) {
+	
+ 	//show logout button
+		 	if(localStorage.localizeme_user_id == page.query.user_id){
+		 		
+		 		var logoutButton = $$('.logoutbuttondiv');
+				logoutButton.html('<div class="card">'+
+								       '<p>'+
+								        '<a href="#" class="button button-big button-fill button-raised" id="logout" onclick="logout()">'+
+								        '<i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>'+
+								      '</p>'+
+								'</div>');
+			
+				$$('.edit_profile').html('<a href="users_edit.html?user_id='+page.query.id+'" class="link button button-fill"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>');
+			}else{
+				$$('.toolbar-inner').append('<a href="messages_user.html?user_id={{url_query.user_id}}&&name={{url_query.name}}" class="link">'+
+			    		'<i class="fa fa-comment-o" ></i>&nbsp;chat</a>');
+			}
+	
+	
+	
+		 myApp.showPreloader('Retrieving information...');
 		    setTimeout(function () {
 		        myApp.hidePreloader();
 		    }, 2000);
 		    
-		    var usersRef = new Firebase('https://localizeme.firebaseio.com/users');
-		  /*  var usersRefgeo = new Firebase('https://localizeme.firebaseio.com/geousers');
-		 	 var geoFireUserProfile = new GeoFire(usersRefgeo);
-		 	
-		 	geoFireUserProfile.get(page.query.user_id).then(function(location) {
-				  if (location === null) {
-				    console.log("Provided key is not in GeoFire");
-				  }
-				  else {
-				    console.log("Provided key has a location of " + location);
-				    
-				    //find the distance between these two people
-
-						var distance = GeoFire.distance(location, localStorage.center);  // distance === 12378.536597423461
-						$$('.distance').html(distance+' away from you');
-				  }
-				}, function(error) {
-				  console.log("Error: " + error);
-				}); */
-		 	
-		 	usersRef.child(page.query.user_id).once('value', function(snapshot) {
+		     
+			
+			
+		    var usersRef = new Firebase('https://localizeme.firebaseio.com/users/'+page.query.user_id);
+	
+		 	usersRef.once('value', function(snapshot) {
 			    //GET DATA
 			    var data = snapshot.val();
-			    var username = data.username || "";
+			    //var username = data.username || "";
 			    var firstname = data.firstname || "";
 			    var middlename = data.middlename || "";
 			    var lastname = data.lastname || "";
@@ -477,11 +588,11 @@ function createContentPage() {
 			    var gender = data.gender || "";
 			    var about = data.about || "nothing yet";
 			    var get_user_id = snapshot.key();
-			   // myApp.alert(snapshot.val());
+			   
 			    
 			    var day = data.day;
 			    var time = data.time;
-			    $$('.username').text(uname);
+			   // $$('.username').text(uname);
 			    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
 			   var usersRefElement = $$('.userProfileCard');
 			   $$('.username').text(uname);
@@ -495,7 +606,9 @@ function createContentPage() {
 				          '</div>'+
 				          '<div class="item-subtitle">'+data.gender+'</div>'+
 				        '</div>'+
-				   '</li>'+
+				   '</li>');
+				   
+				   usersRefElement.append(
 				    '<li>'+
 				        '<div class="item-inner">'+
 				          '<div class="item-title-row">'+
@@ -509,14 +622,9 @@ function createContentPage() {
 		    });
 
             //if 
-            if(localStorage.user_id == page.query.user_id){
-				$$('.toolbar-inner').append('<a href="#" data-popup=".popup-newpost" class="open-popup link"><i class="fa fa-pencil--o" aria-hidden="true"></i> new post</a>');
-			}
-            if(localStorage.user_id == page.query.user_id){
-				$$('.edit_profile').html('<a href="users_edit.html?user_id='+page.query.id+'" class="link button button-fill back"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>');
-			}
+           
 		     var postsRef = new Firebase("https://localizeme.firebaseio.com/posts");
-		 	postsRef.orderByChild("user_id").startAt(localStorage.user_id).endAt(localStorage.user_id).limitToLast(50).on('value', function(snapshot) {
+		 	postsRef.orderByChild("user_id").startAt(localStorage.localizeme_user_id).endAt(localStorage.localizeme_user_id).limitToLast(50).on('value', function(snapshot) {
 			    //GET DATA
 			    var data = snapshot.val();
 			    var username = data.username || "";
@@ -596,7 +704,7 @@ var myMessages = myApp.messages('.messages', {
 			    var username = data.name || "anonymous";
 			    var message = "<b>"+data.title+"</b> <br/> "+data.text;
 			    
-			    if(localStorage.user_id == data.user_id){ //if this is the sender
+			    if(localStorage.localizeme_user_id == data.user_id){ //if this is the sender
 					 var messageType = 'sent';
 					   }else{
 					   	     var messageType = 'received';
@@ -654,11 +762,11 @@ var myMessages = myApp.messages('.messages', {
 				  
 			
 			  
-				var complaintReply = messagesRef.child(page.query.id+"/messages_user_replies");
+				var userReply = messagesRef.child(page.query.id+"/messages_user_replies");
 				  // Add message
-				  complaintReply.push({
+				  userReply.push({
 				  	//userid
-				  	user_id: localStorage.user_id, 
+				  	user_id: localStorage.localizeme_user_id, 
 				  	receiver_user_id: page.query.id,
 				    // Message text
 				    text: messageText,
@@ -687,7 +795,7 @@ var myMessages = myApp.messages('.messages', {
 			    var username = data.title || "anonymous";
 			    var message = data.text;
 			    
-			    if(localStorage.user_id == data.user_id){ //if this is the sender
+			    if(localStorage.localizeme_user_id == data.user_id){ //if this is the sender
 					 var messageType = 'sent';
 					   }else{
 					   	     var messageType = 'received';
@@ -811,7 +919,7 @@ var myMessages = myApp.messages('.messages', {
                     formDataUser.latitude = localStorage.userLatitude;
 					formDataUser.longitude = localStorage.userLongitude;
 					var geoFireUsers = new GeoFire(geomessagesRef.child("geousers"));
-                    geoFireUsers.set(localStorage.user_id, center);
+                    geoFireUsers.set(localStorage.localizeme_user_id, center);
 				    
 				    
 				  	 
@@ -824,7 +932,7 @@ var myMessages = myApp.messages('.messages', {
 				
                     
 				  // Message text
-				  var messageText = myMessagebar.value().trim();
+				  var messageText = '<span style="font-size:15px;">'+myMessagebar.value().trim()+'</span>';
 				  // Exit if empy message
 				  if (messageText.length === 0) return;
 				 
@@ -839,7 +947,7 @@ var myMessages = myApp.messages('.messages', {
 				  try{
 					 var newPostRef =  messagesRef.push({
 				  	//userid
-				  	user_id: localStorage.user_id, 
+				  	user_id: localStorage.localizeme_user_id, 
 				    // Message text
 				    text: messageText,
 				    // Random message type
@@ -902,7 +1010,7 @@ var myMessages = myApp.messages('.messages', {
 			   // myApp.alert(snapshot.val());
 			    
 			    
-			    if(localStorage.user_id == data.user_id){ //if this is the sender
+			    if(localStorage.localizeme_user_id == data.user_id){ //if this is the sender
 					 var messageType = 'sent';
 			   }else{
 			   	     var messageType = 'received';
@@ -988,7 +1096,7 @@ var myMessages = myApp.messages('.messages', {
 			    
 
 			    //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
-			      if(data.gender != null && snapshot.key() != localStorage.user_id){   
+			      if(data.gender != null && snapshot.key() != localStorage.localizeme_user_id){   
 			   var messageList = $$('.users-list-block');
              
        

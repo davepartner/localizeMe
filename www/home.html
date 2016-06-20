@@ -1,0 +1,64 @@
+ 
+    
+    <div class="page" data-page="home">
+ 
+ 
+    
+        <div class="navbar">
+		    <div class="navbar-inner">
+		        <div class="left"><a href="#" style="float: left;" class="left link button button-fill back"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></div>
+		        <div class="center username"></div>
+		        <div class="right edit_profile"></div>
+		    </div>
+		</div>
+		
+		<div class="toolbar toolbar-bottom">
+		    <div class="toolbar-inner">
+		        <a href="#" class="back link"> <i class="fa fa-chevron-left" ></i> </a>
+		        <a href="messages_user.html?user_id={{url_query.user_id}}&&name={{url_query.name}}" class="link"><i class="fa fa-comment-o" ></i>&nbsp;chat</a>
+		        <a href="#" data-popup=".popup-newpost" class="open-popup link"><i class="fa fa-pencil-o" aria-hidden="true"></i> new post</a>
+		    </div>
+		</div>
+         <div class="page-content" style="padding-top: 70px">
+		    <div id="map"></div>
+   
+			<!--<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
+	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
+			 </div> -->    
+		
+			<div class="card">
+				  <div class="card-header"><span class="yourCurrentLocation"> </span></div>
+				  
+				  <div class="card-content">
+				    <div class="card-content-inner">
+				    	<p>
+						  <a href="messages_view.html?selectedRadius=0.1&name=compound" class="button button-fill button-raised enter-chat">This Compound 0.1km</a>
+						  </p><p>
+						  <a href="messages_view.html?selectedRadius=0.5&name=street" class="button button-fill button-raised enter-chat">This Street 0.5km</a>
+						</p><p>
+						  <a href="messages_view.html?selectedRadius=20&name=City" class="button button-fill button-raised enter-chat">This City 20km</a>
+						  </p><p>
+						  <a href="messages_view.html?selectedRadius=50&name=State" class="button button-fill button-raised enter-chat">This State 50km</a>
+						</p> 
+				    </div>
+				  </div>
+				<div class="card-footer">
+  </div> 
+				 
+			 
+				</div>
+			
+				  
+           
+                  		<div class="card">
+						       <p>
+						        <a href="#" class="button button-big button-fill button-raised" id="logout">
+						        <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+						      </p>
+						</div> 
+			 		 </div>
+
+      
+         
+		  
+		   </div>

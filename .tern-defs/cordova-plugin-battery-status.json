@@ -1,0 +1,14 @@
+{
+    "!name": "cordova-plugin-battery-status",
+    "!define": {
+        "!modules": {
+            "battery": {
+                "channels": {}
+            }
+        }
+    },
+    "!plugin-version": "1.1.2",
+    "navigator": {
+        "battery": "!modules.battery"
+    }
+}

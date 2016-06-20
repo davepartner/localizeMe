@@ -1,0 +1,15 @@
+{
+    "!name": "cordova-plugin-splashscreen",
+    "!define": {
+        "!modules": {
+            "SplashScreen": {
+                "show": "fn()",
+                "hide": "fn()"
+            }
+        }
+    },
+    "!plugin-version": "3.2.2",
+    "navigator": {
+        "splashscreen": "!modules.SplashScreen"
+    }
+}

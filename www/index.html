@@ -1,24 +1,5 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
 
 <head>
@@ -60,123 +41,23 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     
-  
-   <style>
+  <style>
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
-      /*#map {
-        height: 25%;
-      }*/
+      #map {
+        height: 300px;
+        width: 100%;
+      }
     </style>
-    
     		 
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script>
+ <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8&libraries=places"></script> -->
+
+     
   <script>
   
- 
-			
-			
-var isMobile = {  
-  Opera: function() {
-       //return navigator.userAgent.match(/Opera Mini/i);
-       alert("This app is not destinied for opera mini, please try other browsers like chrome, mozilla or safari");
-    },/*
-    Android: function() {
-        return navigator.userAgent.match(/Android/i);
-    },
-    BlackBerry: function() {
-        return navigator.userAgent.match(/BlackBerry/i);
-    },
-    iOS: function() {
-        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-    },
-  
-    Windows: function() {
-        return navigator.userAgent.match(/IEMobile/i);
-    },
-    any: function() {
-        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-    }*/
-};
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition,showError);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-function showPosition(position) {
-   // x.innerHTML = "Latitude: " + position.coords.latitude + 
-   // "<br>Longitude: " + position.coords.longitude; 
-    
-    var lat=position.coords.latitude;
-var lang=position.coords.longitude;
-
-//Google Maps
-var myLatlng = new google.maps.LatLng(lat,lang);
-var mapOptions = {zoom: 15,center: myLatlng,enableHighAccuracy: true,  maximumAge: 30000,timeout : 27000}
-var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-var marker = new google.maps.Marker({position: myLatlng,map: map});
-
-
-
-
-function ReverseGeocode(latitude, longitude){
-						    var reverseGeocoder = new google.maps.Geocoder();
-						    var currentPosition = new google.maps.LatLng(latitude, longitude);
-						    reverseGeocoder.geocode({'latLng': currentPosition}, function(results, status) {
-						 
-						            if (status == google.maps.GeocoderStatus.OK) {
-						                    if (results[0]) {
-						                  // $$('.yourCurrentLocation').html('Address : ' + results[0].formatted_address + ',' + 'Type : ' + results[0].types+ '<br/>');
-						                    $('.yourCurrentLocation').html('Find posts and people around this:'+ 
-						                    /*'<a href="messages_view.html?selectedRadius=0.1&name='+results[0].address_components[0].short_name+'" >' + 
-						                    results[0].address_components[0].long_name +*/
-						                    '<a href="messages_view.html?selectedRadius=0.1&name=compound"> Compound</a>,'+
-						                    ' <a href="messages_view.html?selectedRadius=0.5&name='+results[0].address_components[1].long_name+'" >'+ 
-						                    results[0].address_components[1].long_name + 
-						                    '</a>, <a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[2].long_name+'" >'+ 
-						                    results[0].address_components[2].long_name+'</a>, '+ 
-						                    '<a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[3].long_name+'" >'+ 
-						                    results[0].address_components[3].long_name+'</a>'+ 
-						                    ', <a href="messages_view.html?selectedRadius=20&name='+results[0].address_components[4].long_name+'" >'+ 
-						                    results[0].address_components[4].long_name+'</a>');
-						                    }
-						            else {
-						                    $$('.yourCurrentLocation').html('Unable to detect your address.');
-						                    }
-						        } else {
-						            $$('.yourCurrentLocation').html('Unable to detect your address.');
-						        }
-						    });
-						}
-
-
-ReverseGeocode(lat, lang);
-}
-
-
-
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
-            break;
-        case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
-            break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
-            break;
-    }
-}
-google.maps.event.addDomListener(window, 'load', getLocation);
 
 //code to prevent back button misbehaviour
 document.addEventListener('backbutton', function (e) {
@@ -229,7 +110,7 @@ document.addEventListener('backbutton', function (e) {
               <div class="navbar-inner">
               <div class="left"></div>
                 <div class="center"> <i class="fa fa-map-marker" ></i> LocalizeMe</div>
-                <div class="right"><a href="#" class="link button button-fill back myProfile"><i class="fa fa-user" aria-hidden="true"></i></a></div>
+                <div class="right"><a href="#" class="link button button-fill back" onclick="myProfile()"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</a></div>
               </div>
             </div>              
             
@@ -248,17 +129,17 @@ document.addEventListener('backbutton', function (e) {
   
 			<div class="page-content" style="padding-top: 70px">
 		
-		  <div id="map" style="width: 100%; height: 300px; display: block;">
-                
-     </div>
+		
      
 			<!--<div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
 	          <i class="fa fa-street-view color-cyan" aria-hidden="true" ></i>		
 			 </div> -->    
-		
-			<div class="card">
+		  <div id="map"></div>
+			
+			
+			 	<div class="card">
 				  <div class="card-header"><span class="yourCurrentLocation"> </span></div>
-				  
+				 <!--
 				  <div class="card-content">
 				    <div class="card-content-inner">
 				    	<p>
@@ -271,22 +152,16 @@ document.addEventListener('backbutton', function (e) {
 						  <a href="messages_view.html?selectedRadius=50&name=State" class="button button-fill button-raised enter-chat">This State 50km</a>
 						</p> 
 				    </div>
-				  </div>
+				  </div> 
 				<div class="card-footer">
-  </div> 
+  </div> -->
 				 
 			 
 				</div>
 			
 				  
-            
-        <!--
-                  		<div class="card">
-						       <p>
-						        <a href="#" class="button button-big button-fill button-raised" id="logout">
-						        <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
-						      </p>
-						</div> -->
+           
+				  
 			 		 </div>
         
           </div>
@@ -308,9 +183,15 @@ document.addEventListener('backbutton', function (e) {
     <div class="view">
       <div class="page">
       <div class="page-content login-screen-content">
-    <div align="center" style="font-size: 80px; margin-top: 0; margin-bottom: 0; " class=" blinks">
-	          <i class="fa fa-map-marker color-cyan" aria-hidden="true" ></i>		
+    <div align="center" style="font-size: 40px; margin-top: 0; margin-bottom: 0; " class="blinks color-pink">
+	          <i class="fa fa-map-marker" aria-hidden="true" ></i>	LocalizeMe	
 			 </div>
+			 
+      <div class="demo-progressbar-load-hide">
+        <p style="height:2px"></p>
+      </div>
+      
+      
       <div class="content-block">
     <!-- Buttons row as tabs controller -->
     <div class="buttons-row">
@@ -354,7 +235,7 @@ document.addEventListener('backbutton', function (e) {
       </div>
       <div class="list-block">
         <ul>
-          <li><a href="#" class="button login-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In</a></li>
+          <li><a href="#" class="button login-button button-raised button-fill  ripple-green demo-progressbar-load-hide"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In</a></li>
         </ul>
       </div>
     </form> 
@@ -371,7 +252,7 @@ document.addEventListener('backbutton', function (e) {
             <div class="item-inner">
               <div class="item-title label"><i class="fa fa-user" aria-hidden="true"></i> About me</div>
               <div class="item-input">
-                <textaread type="text" name="about" placeholder="Your Firstname"></textarea>
+                <textarea type="text" name="about" placeholder="Your Firstname"></textarea>
               </div>
             </div>
           </li>
@@ -425,7 +306,7 @@ document.addEventListener('backbutton', function (e) {
 		    <li class="item-content">
             <div class="item-inner">
               <div class="item-input">
-             <a href="#" id="signupButton" class="button list-button button-raised button-fill  ripple-green"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign Up</a>
+             <a href="#" id="signupButton" class="button list-button button-raised button-fill ripple-green demo-progressbar-load-hide"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign Up</a>
         
               </div>
             </div>
@@ -452,7 +333,7 @@ document.addEventListener('backbutton', function (e) {
       </div>
       <div class="list-block">
         <ul>
-          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill  ripple-green">Send Recovery Email</a></li>
+          <li><a href="#" id="sendRecovery" class="button recovery-button button-raised button-fill ripple-green demo-progressbar-load-hide">Send Recovery Email</a></li>
         </ul>
       </div>
     </form> 
@@ -483,6 +364,128 @@ document.addEventListener('backbutton', function (e) {
    <script type="text/javascript" src="js/index.js"></script> 
  <script type="text/javascript">
         app.initialize();
+    </script>
+    
+    
+     	
+  
+   <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+     #map {
+        height:70%;
+      }
+    </style>
+    	 
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoIpzHnfUGxck9NFumn1zhGJwfE0b0Wb8"></script>
+  <script>
+  
+ 
+			
+			
+var isMobile = {  
+  Opera: function() {
+       //return navigator.userAgent.match(/Opera Mini/i);
+       alert("This app is not destinied for opera mini, please try other browsers like chrome, mozilla or safari");
+    },/*
+    Android: function() {
+        return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function() {
+        return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function() {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+  
+    Windows: function() {
+        return navigator.userAgent.match(/IEMobile/i);
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    }*/
+};
+function getLocation() {
+    if (navigator.geolocation) {
+    	//check if geolocation was accepted
+    	if(localStorage.geolocation_permission != "accepted"){
+    		myApp.alert("This app will never reveal your location information to anyone except you.","Note that");
+    		myApp.alert("This app will ask for your permission to know your location in the next popup. You need to click yes or ok for this app to function properly", "Permission Needed");
+    	} else{
+    		localStorage.geolocation_permission = "accepted";
+    	}
+    	//access users location
+        navigator.geolocation.watchPosition(showPosition,showError,{enableHighAccuracy: true,  maximumAge: 60*1000,timeout : 10 * 1000 * 1000});
+        
+        if(localStorage.exactLocation_advise != "delivered"){
+        	myApp.alert("If this map does not display your exact position, you can manually click on your exact position on the map", "You can Choose")
+            localStorage.exactLocation_advise = "delivered";
+          }
+        
+        localStorage.geolocation_permission = "accepted";
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+   // x.innerHTML = "Latitude: " + position.coords.latitude + 
+   // "<br>Longitude: " + position.coords.longitude; 
+    
+    var lat=position.coords.latitude;
+var lang=position.coords.longitude;
+//Google Maps
+var myLatlng = new google.maps.LatLng(lat,lang);
+var mapOptions = {zoom: 15,center: myLatlng};
+var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+var marker = new google.maps.Marker({position: myLatlng,map: map,text: "You are here"});
+
+ReverseGeocode(lat, lang); //defined in my-app.js
+}
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+google.maps.event.addDomListener(window, 'load', getLocation);
+//code to prevent back button misbehaviour
+document.addEventListener('backbutton', function (e) {
+            e.preventDefault();
+            /* Check for open panels */
+            if ($$('.panel.active').length > 0) {
+                f7.closePanel();
+                return;
+            }
+            /* Check for go back in history */
+            var view = f7.getCurrentView();
+            if (!view) return;
+            if (view.history.length > 1) {
+                view.router.back();
+                return;
+            }
+            /* Quit app */
+            navigator.notification.confirm(
+                'Exit Application ?',              // message
+                function (n) {
+                    if (n == 1) navigator.app.exitApp(); 
+                },
+                'Bite To Eat',        // title
+                ['OK', 'Cancel']      // button labels
+            );
+        }, false);
     </script>
 </body>
 

@@ -1,0 +1,25 @@
+{
+    "!name": "cordova-plugin-network-information",
+    "!define": {
+        "!modules": {
+            "network": {
+                "type": "string"
+            },
+            "Connection": {
+                "UNKNOWN": "string",
+                "ETHERNET": "string",
+                "WIFI": "string",
+                "CELL_2G": "string",
+                "CELL_3G": "string",
+                "CELL_4G": "string",
+                "CELL": "string",
+                "NONE": "string"
+            }
+        }
+    },
+    "!plugin-version": "1.2.1",
+    "navigator": {
+        "connection": "!modules.network"
+    },
+    "Connection": "!modules.Connection"
+}

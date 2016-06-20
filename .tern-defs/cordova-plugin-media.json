@@ -1,0 +1,78 @@
+{
+    "!name": "cordova-plugin-media",
+    "!define": {
+        "!modules": {
+            "MediaError": {
+                "MEDIA_ERR_NONE_ACTIVE": "number",
+                "MEDIA_ERR_ABORTED": "number",
+                "MEDIA_ERR_NETWORK": "number",
+                "MEDIA_ERR_DECODE": "number",
+                "MEDIA_ERR_NONE_SUPPORTED": "number",
+                "MEDIA_ERR_SRC_NOT_SUPPORTED": "number",
+                "!type": "fn(code: ?, msg: ?)"
+            },
+            "Media": {
+                "MEDIA_STATE": "number",
+                "MEDIA_DURATION": "number",
+                "MEDIA_POSITION": "number",
+                "MEDIA_ERROR": "number",
+                "MEDIA_NONE": "number",
+                "MEDIA_STARTING": "number",
+                "MEDIA_RUNNING": "number",
+                "MEDIA_PAUSED": "number",
+                "MEDIA_STOPPED": "number",
+                "MEDIA_MSG": "[string]",
+                "get": "fn(id: ?) -> +!modules.Media",
+                "prototype": {
+                    "play": "fn(options: ?)",
+                    "stop": "fn()",
+                    "seekTo": "fn(milliseconds: ?)",
+                    "pause": "fn()",
+                    "getDuration": "fn() -> !this._duration",
+                    "getCurrentPosition": "fn(success: ?, fail: ?)",
+                    "startRecord": "fn()",
+                    "stopRecord": "fn()",
+                    "release": "fn()",
+                    "setVolume": "fn(volume: ?)",
+                    "setRate": "fn(rate: ?)"
+                },
+                "onStatus": "fn(id: ?, msgType: ?, value: ?)",
+                "!type": "fn(src: ?, successCallback: ?, errorCallback: ?, statusCallback: ?)",
+                "_duration": "number",
+                "_position": "number"
+            },
+            "BrowserMedia": {
+                "MEDIA_STATE": "number",
+                "MEDIA_DURATION": "number",
+                "MEDIA_POSITION": "number",
+                "MEDIA_ERROR": "number",
+                "MEDIA_NONE": "number",
+                "MEDIA_STARTING": "number",
+                "MEDIA_RUNNING": "number",
+                "MEDIA_PAUSED": "number",
+                "MEDIA_STOPPED": "number",
+                "MEDIA_MSG": "[string]",
+                "prototype": {
+                    "play": "fn()",
+                    "stop": "fn()",
+                    "seekTo": "fn(milliseconds: number)",
+                    "pause": "fn()",
+                    "getDuration": "fn() -> !this._duration",
+                    "getCurrentPosition": "fn(success: ?, fail: ?)",
+                    "startRecord": "fn()",
+                    "stopRecord": "fn()",
+                    "release": "fn()",
+                    "setVolume": "fn(volume: ?)"
+                },
+                "onStatus": "fn(id: ?, msgType: number, value: ?)",
+                "!type": "fn(src: ?, successCallback: ?, errorCallback: ?, statusCallback: ?)"
+            }
+        },
+        "!modules.Media.get.!ret": "+!modules.Media"
+    },
+    "!plugin-version": "2.2.0",
+    "window": {
+        "MediaError": "!modules.MediaError",
+        "Media": "!modules.Media"
+    }
+}

@@ -1,0 +1,149 @@
+{
+    "!name": "cordova-plugin-file",
+    "!define": {
+        "!modules": {
+            "FileUploadOptions": "fn(fileKey: ?, fileName: ?, mimeType: ?, params: ?, headers: ?, httpMethod: ?)",
+            "Entry": {
+                "prototype": {
+                    "getMetadata": "fn(successCallback: ?, errorCallback: ?)",
+                    "setMetadata": "fn(successCallback: ?, errorCallback: ?, metadataObject: ?)",
+                    "moveTo": "fn(parent: ?, newName: ?, successCallback: ?, errorCallback: ?)",
+                    "copyTo": "fn(parent: ?, newName: ?, successCallback: ?, errorCallback: ?)",
+                    "toInternalURL": "fn()",
+                    "toURL": "fn() -> !this.nativeURL",
+                    "toNativeURL": "fn()",
+                    "toURI": "fn(mimeType: ?)",
+                    "remove": "fn(successCallback: ?, errorCallback: ?)",
+                    "getParent": "fn(successCallback: ?, errorCallback: ?)"
+                },
+                "!type": "fn(isFile: ?, isDirectory: ?, name: ?, fullPath: ?, fileSystem: ?, nativeURL: ?)"
+            },
+            "FileError": {
+                "NOT_FOUND_ERR": "number",
+                "SECURITY_ERR": "number",
+                "ABORT_ERR": "number",
+                "NOT_READABLE_ERR": "number",
+                "ENCODING_ERR": "number",
+                "NO_MODIFICATION_ALLOWED_ERR": "number",
+                "INVALID_STATE_ERR": "number",
+                "SYNTAX_ERR": "number",
+                "INVALID_MODIFICATION_ERR": "number",
+                "QUOTA_EXCEEDED_ERR": "number",
+                "TYPE_MISMATCH_ERR": "number",
+                "PATH_EXISTS_ERR": "number",
+                "!type": "fn(error: number)",
+                "code": "number"
+            },
+            "DirectoryReader": {
+                "prototype": {
+                    "readEntries": "fn(successCallback: ?, errorCallback: ?)"
+                },
+                "!type": "fn(localURL: ?)",
+                "hasReadEntries": "bool"
+            },
+            "FileEntry": {
+                "prototype": {
+                    "createWriter": "fn(successCallback: ?, errorCallback: ?)",
+                    "file": "fn(successCallback: fn(filePointer: +!modules.File), errorCallback: ?)"
+                },
+                "!type": "fn(name: ?, fullPath: ?, fileSystem: ?, nativeURL: ?)",
+                "filesystem": "+!modules.FileSystem"
+            },
+            "DirectoryEntry": {
+                "prototype": {
+                    "createReader": "fn() -> +!modules.DirectoryReader",
+                    "getDirectory": "fn(path: ?, options: ?, successCallback: ?, errorCallback: ?)",
+                    "removeRecursively": "fn(successCallback: ?, errorCallback: ?)",
+                    "getFile": "fn(path: ?, options: ?, successCallback: ?, errorCallback: ?)"
+                },
+                "!type": "fn(name: ?, fullPath: string, fileSystem: +!modules.FileSystem, nativeURL: string)"
+            },
+            "Metadata": "fn(metadata: !modules.Metadata.!0)",
+            "File": {
+                "prototype": {
+                    "slice": "fn(start: ?, end: ?) -> +!modules.File"
+                },
+                "!type": "fn(name: string, localURL: ?, type: ?, lastModifiedDate: ?, size: number)",
+                "name": "string",
+                "size": "number",
+                "start": "number",
+                "end": "number"
+            },
+            "FileWriter": {
+                "INIT": "number",
+                "WRITING": "number",
+                "DONE": "number",
+                "prototype": {
+                    "abort": "fn()",
+                    "write": "fn(data: [?], isPendingBlobReadResult: bool)",
+                    "seek": "fn(offset: ?)",
+                    "truncate": "fn(size: ?)"
+                },
+                "!type": "fn(file: +!modules.File)"
+            },
+            "ProgressEvent": "fn(type: string, dict: ?)",
+            "FileReader": {
+                "READ_CHUNK_SIZE": "number",
+                "EMPTY": "number",
+                "LOADING": "number",
+                "DONE": "number",
+                "prototype": {
+                    "abort": "fn()",
+                    "readAsText": "fn(file: ?, encoding: ?)",
+                    "readAsDataURL": "fn(file: ?)",
+                    "readAsBinaryString": "fn(file: ?)",
+                    "readAsArrayBuffer": "fn(file: ?)"
+                },
+                "!type": "fn()"
+            },
+            "FileSystem": {
+                "prototype": {
+                    "__format__": "fn(fullPath: ?, nativeUrl: ?) -> !0",
+                    "toJSON": "fn() -> string"
+                },
+                "encodeURIPath": "fn(path: ?) -> string",
+                "!type": "fn(name: ?, root: ?)",
+                "root": "+!modules.DirectoryEntry"
+            },
+            "FileUploadResult": "fn(size: ?, code: ?, content: ?)",
+            "Flags": "fn(create: ?, exclusive: ?)",
+            "LocalFileSystem": {
+                "TEMPORARY": "number",
+                "PERSISTENT": "number"
+            },
+            "requestFileSystem": "fn(type: ?, size: ?, successCallback: ?, errorCallback: ?)"
+        },
+        "!modules.FileEntry.prototype.file.!0": "fn(filePointer: +!modules.File)",
+        "!modules.DirectoryEntry.prototype.createReader.!ret": "+!modules.DirectoryReader",
+        "!modules.Metadata.!0": {},
+        "!modules.FileWriter.prototype.write.!0": "[?]",
+        "!modules.FileWriter.!0": "+!modules.File",
+        "!modules.ProgressEvent.!1": {
+            "target": {
+                "readyState": "number",
+                "position": "number",
+                "error": "+!modules.FileError"
+            }
+        },
+        "!modules.FileSystem.!1": "+!modules.FileEntry"
+    },
+    "!plugin-version": "4.2.0",
+    "window": {
+        "FileUploadOptions": "!modules.FileUploadOptions",
+        "Entry": "!modules.Entry",
+        "FileError": "!modules.FileError",
+        "DirectoryReader": "!modules.DirectoryReader",
+        "FileEntry": "!modules.FileEntry",
+        "DirectoryEntry": "!modules.DirectoryEntry",
+        "Metadata": "!modules.Metadata",
+        "File": "!modules.File",
+        "FileWriter": "!modules.FileWriter",
+        "ProgressEvent": "!modules.ProgressEvent",
+        "FileReader": "!modules.FileReader",
+        "FileSystem": "!modules.FileSystem",
+        "FileUploadResult": "!modules.FileUploadResult",
+        "Flags": "!modules.Flags",
+        "LocalFileSystem": "!modules.LocalFileSystem",
+        "requestFileSystem": "!modules.requestFileSystem"
+    }
+}

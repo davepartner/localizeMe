@@ -1,0 +1,42 @@
+{
+    "!name": "cordova-plugin-media-capture",
+    "!define": {
+        "!modules": {
+            "CaptureAudioOptions": "fn()",
+            "CaptureImageOptions": "fn()",
+            "CaptureVideoOptions": "fn()",
+            "CaptureError": {
+                "CAPTURE_INTERNAL_ERR": "number",
+                "CAPTURE_APPLICATION_BUSY": "number",
+                "CAPTURE_INVALID_ARGUMENT": "number",
+                "CAPTURE_NO_MEDIA_FILES": "number",
+                "CAPTURE_NOT_SUPPORTED": "number",
+                "!type": "fn(c: number)"
+            },
+            "MediaFileData": "fn(codecs: ?, bitrate: ?, height: ?, width: ?, duration: ?)",
+            "MediaFile": {
+                "prototype": {
+                    "getFormatData": "fn(successCallback: ?, errorCallback: ?)"
+                },
+                "!type": "fn(name: ?, localURL: ?, type: ?, lastModifiedDate: ?, size: ?)"
+            },
+            "capture": {
+                "supportedAudioModes": "[?]",
+                "supportedImageModes": "[?]",
+                "supportedVideoModes": "[?]"
+            }
+        }
+    },
+    "!plugin-version": "1.2.0",
+    "CaptureAudioOptions": "!modules.CaptureAudioOptions",
+    "CaptureImageOptions": "!modules.CaptureImageOptions",
+    "CaptureVideoOptions": "!modules.CaptureVideoOptions",
+    "CaptureError": "!modules.CaptureError",
+    "MediaFileData": "!modules.MediaFileData",
+    "MediaFile": "!modules.MediaFile",
+    "navigator": {
+        "device": {
+            "capture": "!modules.capture"
+        }
+    }
+}

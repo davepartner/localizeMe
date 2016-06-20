@@ -1,0 +1,52 @@
+{
+    "!name": "cordova-plugin-camera",
+    "!define": {
+        "!modules": {
+            "Camera": {
+                "DestinationType": {
+                    "DATA_URL": "number",
+                    "FILE_URI": "number",
+                    "NATIVE_URI": "number"
+                },
+                "EncodingType": {
+                    "JPEG": "number",
+                    "PNG": "number"
+                },
+                "MediaType": {
+                    "PICTURE": "number",
+                    "VIDEO": "number",
+                    "ALLMEDIA": "number"
+                },
+                "PictureSourceType": {
+                    "PHOTOLIBRARY": "number",
+                    "CAMERA": "number",
+                    "SAVEDPHOTOALBUM": "number"
+                },
+                "PopoverArrowDirection": {
+                    "ARROW_UP": "number",
+                    "ARROW_DOWN": "number",
+                    "ARROW_LEFT": "number",
+                    "ARROW_RIGHT": "number",
+                    "ARROW_ANY": "number"
+                },
+                "Direction": {
+                    "BACK": "number",
+                    "FRONT": "number"
+                }
+            },
+            "camera": {
+                "getPicture": "fn(successCallback: ?, errorCallback: ?, options: ?)",
+                "cleanup": "fn(successCallback: ?, errorCallback: ?)"
+            },
+            "CameraPopoverOptions": "fn(x: ?, y: ?, width: ?, height: ?, arrowDir: ?)",
+            "CameraPopoverHandle": "fn()"
+        }
+    },
+    "!plugin-version": "2.1.1",
+    "Camera": "!modules.Camera",
+    "navigator": {
+        "camera": "!modules.camera"
+    },
+    "CameraPopoverOptions": "!modules.CameraPopoverOptions",
+    "CameraPopoverHandle": "!modules.CameraPopoverHandle"
+}

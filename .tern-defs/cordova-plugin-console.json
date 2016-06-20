@@ -1,0 +1,50 @@
+{
+    "!name": "cordova-plugin-console",
+    "!define": {
+        "!modules": {
+            "logger": {
+                "<i>": "string",
+                "level": "fn(value: ?) -> string",
+                "useConsole": "fn(value: ?) -> bool",
+                "useLogger": "fn(value: ?) -> bool",
+                "log": "fn(message: string)",
+                "error": "fn(message: ?)",
+                "warn": "fn(message: string)",
+                "info": "fn(message: ?)",
+                "debug": "fn(message: ?)",
+                "logLevel": "fn(level: string)",
+                "format": "fn(formatString: string, args: string) -> string",
+                "__onDeviceReady": "fn()"
+            },
+            "console": {
+                "useLogger": "fn(value: ?) -> bool",
+                "log": "fn()",
+                "error": "fn()",
+                "warn": "fn()",
+                "info": "fn()",
+                "debug": "fn()",
+                "assert": "fn(expression: ?)",
+                "clear": "fn()",
+                "dir": "fn(object: ?)",
+                "dirxml": "fn(node: ?)",
+                "trace": "fn()",
+                "time": "fn(name: ?)",
+                "timeEnd": "fn(name: ?)",
+                "table": "fn(data: ?, columns: ?)",
+                "group": "!modules.console.log",
+                "groupCollapsed": "!modules.console.log",
+                "groupEnd": "!modules.console.trace",
+                "timeStamp": "!modules.console.trace",
+                "profile": "!modules.console.trace",
+                "profileEnd": "!modules.console.trace",
+                "count": "!modules.console.trace",
+                "exception": "!modules.console.log"
+            }
+        }
+    },
+    "!plugin-version": "1.0.3",
+    "cordova": {
+        "logger": "!modules.logger"
+    },
+    "console": "!modules.console"
+}

@@ -1,0 +1,17 @@
+{
+    "!name": "cordova-plugin-inappbrowser",
+    "!define": {
+        "!modules": {
+            "inappbrowser": "fn(strUrl: ?, strWindowName: ?, strWindowFeatures: string, callbacks: ?) -> !modules.inappbrowser.!ret"
+        },
+        "!modules.inappbrowser.!ret": {
+            "channels": {}
+        }
+    },
+    "!plugin-version": "1.3.0",
+    "cordova": {
+        "InAppBrowser": {
+            "open": "!modules.inappbrowser"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "!name": "cordova-plugin-contacts",
+    "!define": {
+        "!modules": {
+            "ContactError": {
+                "UNKNOWN_ERROR": "number",
+                "INVALID_ARGUMENT_ERROR": "number",
+                "TIMEOUT_ERROR": "number",
+                "PENDING_OPERATION_ERROR": "number",
+                "IO_ERROR": "number",
+                "NOT_SUPPORTED_ERROR": "number",
+                "OPERATION_CANCELLED_ERROR": "number",
+                "PERMISSION_DENIED_ERROR": "number",
+                "!type": "fn(err: number)"
+            },
+            "Contact": {
+                "prototype": {
+                    "remove": "fn(successCB: ?, errorCB: ?)",
+                    "clone": "fn() -> !modules.Contact.prototype.clone.!ret",
+                    "save": "fn(successCB: ?, errorCB: ?)"
+                },
+                "!type": "fn(id: ?, displayName: ?, name: ?, nickname: ?, phoneNumbers: ?, emails: ?, addresses: ?, ims: ?, organizations: ?, birthday: ?, note: ?, photos: ?, categories: ?, urls: ?)",
+                "birthday": "+Date"
+            },
+            "contacts": {
+                "find": "fn(fields: ?, successCB: ?, errorCB: ?, options: ?)",
+                "pickContact": "fn(successCB: ?, errorCB: ?)",
+                "create": "fn(properties: ?) -> +!modules.Contact"
+            },
+            "ContactAddress": "fn(pref: ?, type: ?, formatted: ?, streetAddress: ?, locality: ?, region: ?, postalCode: ?, country: ?)",
+            "ContactField": "fn(type: ?, value: ?, pref: ?)",
+            "ContactFindOptions": "fn(filter: ?, multiple: ?, desiredFields: ?, hasPhoneNumber: ?)",
+            "ContactName": "fn(formatted: ?, familyName: ?, givenName: ?, middle: ?, prefix: ?, suffix: ?)",
+            "ContactOrganization": "fn(pref: ?, type: ?, name: ?, dept: ?, title: ?)"
+        },
+        "!modules.Contact.prototype.clone.!ret": {},
+        "!modules.contacts.create.!ret": "+!modules.Contact",
+        "!modules.ContactFindOptions.!2": "[?]"
+    },
+    "!plugin-version": "2.0.1",
+    "ContactError": "!modules.ContactError",
+    "Contact": "!modules.Contact",
+    "navigator": {
+        "contacts": "!modules.contacts"
+    },
+    "ContactAddress": "!modules.ContactAddress",
+    "ContactField": "!modules.ContactField",
+    "ContactFindOptions": "!modules.ContactFindOptions",
+    "ContactName": "!modules.ContactName",
+    "ContactOrganization": "!modules.ContactOrganization"
+}

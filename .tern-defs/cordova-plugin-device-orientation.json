@@ -1,0 +1,24 @@
+{
+    "!name": "cordova-plugin-device-orientation",
+    "!define": {
+        "!modules": {
+            "CompassError": {
+                "COMPASS_INTERNAL_ERR": "number",
+                "COMPASS_NOT_SUPPORTED": "number",
+                "!type": "fn(err: ?)"
+            },
+            "CompassHeading": "fn(magneticHeading: ?, trueHeading: ?, headingAccuracy: ?, timestamp: ?)",
+            "compass": {
+                "getCurrentHeading": "fn(successCallback: ?, errorCallback: ?, options: ?)",
+                "watchHeading": "fn(successCallback: ?, errorCallback: ?, options: ?)",
+                "clearWatch": "fn(id: ?)"
+            }
+        }
+    },
+    "!plugin-version": "1.0.3",
+    "CompassError": "!modules.CompassError",
+    "CompassHeading": "!modules.CompassHeading",
+    "navigator": {
+        "compass": "!modules.compass"
+    }
+}

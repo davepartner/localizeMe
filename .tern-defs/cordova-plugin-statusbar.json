@@ -1,0 +1,23 @@
+{
+    "!name": "cordova-plugin-statusbar",
+    "!define": {
+        "!modules": {
+            "statusbar": {
+                "isVisible": "bool",
+                "overlaysWebView": "fn(doOverlay: ?)",
+                "styleDefault": "fn()",
+                "styleLightContent": "fn()",
+                "styleBlackTranslucent": "fn()",
+                "styleBlackOpaque": "fn()",
+                "backgroundColorByName": "fn(colorname: ?)",
+                "backgroundColorByHexString": "fn(hexString: string)",
+                "hide": "fn()",
+                "show": "fn()"
+            }
+        }
+    },
+    "!plugin-version": "2.1.3",
+    "window": {
+        "StatusBar": "!modules.statusbar"
+    }
+}

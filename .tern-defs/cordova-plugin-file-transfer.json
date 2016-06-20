@@ -1,0 +1,46 @@
+{
+    "!name": "cordova-plugin-file-transfer",
+    "!define": {
+        "!modules": {
+            "FileTransferError": {
+                "FILE_NOT_FOUND_ERR": "number",
+                "INVALID_URL_ERR": "number",
+                "CONNECTION_ERR": "number",
+                "ABORT_ERR": "number",
+                "NOT_MODIFIED_ERR": "number",
+                "!type": "fn(code: ?, source: ?, target: ?, status: ?, body: ?, exception: ?)"
+            },
+            "FileTransfer": {
+                "prototype": {
+                    "upload": "fn(filePath: ?, server: ?, successCallback: ?, errorCallback: ?, options: !modules.FileTransfer.prototype.upload.!4, trustAllHosts: ?)",
+                    "download": "fn(source: ?, target: ?, successCallback: ?, errorCallback: ?, trustAllHosts: ?, options: !modules.FileTransfer.prototype.download.!5)",
+                    "abort": "fn()"
+                },
+                "!type": "fn()"
+            },
+            "BrowserFileTransfer": {
+                "prototype": {
+                    "upload": "fn(filePath: ?, server: ?, successCallback: ?, errorCallback: ?, options: ?)",
+                    "download": "fn(source: ?, target: ?, successCallback: ?, errorCallback: ?, trustAllHosts: ?, options: ?)",
+                    "abort": "fn()"
+                },
+                "!type": "fn()"
+            }
+        },
+        "!modules.FileTransfer.prototype.upload.!4": {
+            "headers": {
+                "<i>": "string"
+            }
+        },
+        "!modules.FileTransfer.prototype.download.!5": {
+            "headers": {
+                "<i>": "string"
+            }
+        }
+    },
+    "!plugin-version": "1.5.1",
+    "window": {
+        "FileTransferError": "!modules.FileTransferError",
+        "FileTransfer": "!modules.FileTransfer"
+    }
+}

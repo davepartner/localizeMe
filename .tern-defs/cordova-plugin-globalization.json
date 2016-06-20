@@ -1,0 +1,35 @@
+{
+    "!name": "cordova-plugin-globalization",
+    "!define": {
+        "!modules": {
+            "GlobalizationError": {
+                "UNKNOWN_ERROR": "number",
+                "FORMATTING_ERROR": "number",
+                "PARSING_ERROR": "number",
+                "PATTERN_ERROR": "number",
+                "!type": "fn(code: ?, message: ?)"
+            },
+            "globalization": {
+                "getPreferredLanguage": "fn(successCB: ?, failureCB: ?)",
+                "getLocaleName": "fn(successCB: ?, failureCB: ?)",
+                "dateToString": "fn(date: ?, successCB: ?, failureCB: ?, options: ?)",
+                "stringToDate": "fn(dateString: ?, successCB: ?, failureCB: ?, options: ?)",
+                "getDatePattern": "fn(successCB: ?, failureCB: ?, options: ?)",
+                "getDateNames": "fn(successCB: ?, failureCB: ?, options: ?)",
+                "isDayLightSavingsTime": "fn(date: ?, successCB: ?, failureCB: ?)",
+                "getFirstDayOfWeek": "fn(successCB: ?, failureCB: ?)",
+                "numberToString": "fn(number: ?, successCB: ?, failureCB: ?, options: ?)",
+                "stringToNumber": "fn(numberString: ?, successCB: ?, failureCB: ?, options: ?)",
+                "getNumberPattern": "fn(successCB: ?, failureCB: ?, options: ?)",
+                "getCurrencyPattern": "fn(currencyCode: ?, successCB: ?, failureCB: ?)"
+            }
+        }
+    },
+    "!plugin-version": "1.0.3",
+    "window": {
+        "GlobalizationError": "!modules.GlobalizationError"
+    },
+    "navigator": {
+        "globalization": "!modules.globalization"
+    }
+}

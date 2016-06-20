@@ -121,7 +121,8 @@ ref.authWithPassword({
         myApp.alert("The specified user account does not exist.","Error");
         break;
       default:
-        myApp.alert("Error logging user in:", error);
+       // myApp.alert(error,"Error logging user in:");
+        myApp.alert("Please cross-check your network connectivity","Error logging in:");
     }
     return false; //required to prevent default router action
   } else {
@@ -419,7 +420,7 @@ function createContentPage() {
 
 		function showError(error) {
 		    switch(error.code) {
-		        case error.PERMISSION_DENIED:
+		        /*case error.PERMISSION_DENIED:
 		           myApp.alert("User denied the request for Geolocation.");
 		            break;
 		        case error.POSITION_UNAVAILABLE:
@@ -430,7 +431,7 @@ function createContentPage() {
 		            break;
 		        case error.UNKNOWN_ERROR:
 		            myApp.alert("An unknown error occurred.");
-		            break;
+		            break;*/
 		    }
 		}
 		  
@@ -510,10 +511,12 @@ function createContentPage() {
 
             //if 
             if(localStorage.user_id == page.query.user_id){
-				$$('.toolbar-inner').append('<a href="#" data-popup=".popup-newpost" class="open-popup link"><i class="fa fa-pencil--o" aria-hidden="true"></i> new post</a>');
-			}
-            if(localStorage.user_id == page.query.user_id){
+				$$('.toolbar-inner').append('<a href="#" data-popup=".popup-newpost" class="open-popup link"><i class="fa fa-pencil-o" aria-hidden="true"></i> new post</a>');
+			
 				$$('.edit_profile').html('<a href="users_edit.html?user_id='+page.query.id+'" class="link button button-fill back"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>');
+			
+			
+			
 			}
 		     var postsRef = new Firebase("https://localizeme.firebaseio.com/posts");
 		 	postsRef.orderByChild("user_id").startAt(localStorage.user_id).endAt(localStorage.user_id).limitToLast(50).on('value', function(snapshot) {
@@ -654,9 +657,9 @@ var myMessages = myApp.messages('.messages', {
 				  
 			
 			  
-				var complaintReply = messagesRef.child(page.query.id+"/messages_user_replies");
+				var userReply = messagesRef.child(page.query.id+"/messages_user_replies");
 				  // Add message
-				  complaintReply.push({
+				  userReply.push({
 				  	//userid
 				  	user_id: localStorage.user_id, 
 				  	receiver_user_id: page.query.id,
@@ -824,7 +827,7 @@ var myMessages = myApp.messages('.messages', {
 				
                     
 				  // Message text
-				  var messageText = myMessagebar.value().trim();
+				  var messageText = '<span style="font-size:15px;">'+myMessagebar.value().trim()+'</span>';
 				  // Exit if empy message
 				  if (messageText.length === 0) return;
 				 

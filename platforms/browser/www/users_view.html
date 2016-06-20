@@ -12,7 +12,7 @@
 		    <div class="toolbar-inner">
 		        <a href="#" class="back link"> <i class="fa fa-chevron-left" ></i> </a>
 		        <a href="messages_user.html?user_id={{url_query.user_id}}&&name={{url_query.name}}" class="link"><i class="fa fa-comment-o" ></i>&nbsp;chat</a>
-		        
+		        <a href="#" data-popup=".popup-newpost" class="open-popup link"><i class="fa fa-pencil-o" aria-hidden="true"></i> new post</a>
 		    </div>
 		</div>
           <div class="page-content">
@@ -23,13 +23,15 @@
 			<div class="content-block-title distance"></div>
 
         </div>
-      </div>
+
       
         <!-- This popup has fullscreen size on tablets -->
-		  <div class="popup popup-newpost">
+		  <div class="popup popup-newpost tablet-fullscreen">
 		    <div class="content-block">
 		      <p>About</p>
 		      <p><a href="#" class="close-popup">Close popup</a></p>
 		      <p>Lorem ipsum dolor ...</p>
 		    </div>
-		  </div>
+		  </div>     
+		  
+		   </div>
