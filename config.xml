@@ -1,5 +1,5 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.braintem.localizeme" version="1.0.0">
-  <name>funnyL</name>
+  <name>LocalizeMe</name>
   <description>A geolocation application</description>
   <author href="http://phonegap.com" email="support@phonegap.com">Braintem</author>
   <content src="index.html"/>
